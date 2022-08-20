@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Rust之通用集合类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust学习_2.通用集合类型">
+<meta property="og:url" content="https://suilandcoder.github.io/2021/12/16/220820-2-Rust%E5%AD%A6%E4%B9%A0-2%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="Rust之通用集合类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-16T08:13:03.000Z">
+<meta property="article:modified_time" content="2022-08-20T08:37:27.237Z">
+<meta property="article:author" content="SongJie">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2021/12/16/220820-2-Rust%E5%AD%A6%E4%B9%A0-2%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2021/12/16/220820-2-Rust%E5%AD%A6%E4%B9%A0-2%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/","path":"2021/12/16/220820-2-Rust学习-2通用集合类型/","title":"Rust学习_2.通用集合类型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Rust学习_2.通用集合类型 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="nav-text">通用集合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81Vector"><span class="nav-text">一、Vector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%88%9B%E5%BB%BAVector"><span class="nav-text">1.1 创建Vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E6%9B%B4%E6%96%B0Vector"><span class="nav-text">1.2 更新Vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%88%A0%E9%99%A4Vector"><span class="nav-text">1.3 删除Vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E8%AF%BB%E5%8F%96Vector%E5%85%83%E7%B4%A0"><span class="nav-text">1.4 读取Vector元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-%E6%89%80%E6%9C%89%E6%9D%83%E5%92%8C%E5%80%9F%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-text">1.5 所有权和借用规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-%E9%81%8D%E5%8E%86Vector"><span class="nav-text">1.6 遍历Vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-%E4%BD%BF%E7%94%A8enum%E5%AD%98%E5%82%A8%E5%A4%9A%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.7 使用enum存储多种数据类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81String%E7%B1%BB%E5%9E%8B"><span class="nav-text">二、String类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0-Rust%E5%BC%80%E5%8F%91%E8%80%85%E7%BB%8F%E5%B8%B8%E4%BC%9A%E8%A2%AB%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%9B%B0%E6%89%B0%E5%8E%9F%E5%9B%A0"><span class="nav-text">0. Rust开发者经常会被字符串困扰原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">1. 字符串是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">2. 创建一个新的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%9B%B4%E6%96%B0String"><span class="nav-text">3. 更新String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B4%A2%E5%BC%95"><span class="nav-text">4. 字符串索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%87%E7%89%87"><span class="nav-text">5. 字符串切片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E9%81%8D%E5%8E%86%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">6. 遍历字符串</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2021/12/16/220820-2-Rust%E5%AD%A6%E4%B9%A0-2%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Rust学习_2.通用集合类型 | Zero">
+      <meta itemprop="description" content="Rust之通用集合类型">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust学习_2.通用集合类型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-16 16:13:03" itemprop="dateCreated datePublished" datetime="2021-12-16T16:13:03+08:00">2021-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 16:37:27" itemprop="dateModified" datetime="2022-08-20T16:37:27+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Rust之通用集合类型</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="通用集合类型"><a href="#通用集合类型" class="headerlink" title="通用集合类型"></a>通用集合类型</h2><ul>
+<li>Vector， 动态数组</li>
+<li>String，字符串</li>
+<li>Hashmap，哈希映射</li>
+</ul>
+<h3 id="一、Vector"><a href="#一、Vector" class="headerlink" title="一、Vector"></a>一、Vector</h3><ul>
+<li>由标准库提供；</li>
+<li>可存储多个值；</li>
+<li>只能存储相同类型的数据；</li>
+<li>值在内存中连续存放。</li>
+</ul>
+<h4 id="1-1-创建Vector"><a href="#1-1-创建Vector" class="headerlink" title="1.1 创建Vector"></a>1.1 创建Vector</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">v</span>:<span class="type">Vec</span>&lt;<span class="type">i32</span>&gt; = <span class="type">Vec</span>::<span class="title function_ invoke__">new</span>(); 	<span class="comment">// 方法一</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> <span class="variable">v1</span> = <span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];	<span class="comment">//	方法二</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-更新Vector"><a href="#1-2-更新Vector" class="headerlink" title="1.2 更新Vector"></a>1.2 更新Vector</h4><p>向Vector添加元素，使用<code>push</code>方法；</p>
+<h4 id="1-3-删除Vector"><a href="#1-3-删除Vector" class="headerlink" title="1.3 删除Vector"></a>1.3 删除Vector</h4><p>与任何其他 <code>struct</code>一样，当Vector离开作用域后</p>
+<pre><code>- 它就被清理掉；
+- 它所有的元素也被清理掉；
+</code></pre>
+<h4 id="1-4-读取Vector元素"><a href="#1-4-读取Vector元素" class="headerlink" title="1.4 读取Vector元素"></a>1.4 读取Vector元素</h4><ol>
+<li>索引方式<ul>
+<li>越界：panic</li>
+</ul>
+</li>
+<li><code>get</code>方法<ul>
+<li>越界：返回None</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-5-所有权和借用规则"><a href="#1-5-所有权和借用规则" class="headerlink" title="1.5 所有权和借用规则"></a>1.5 所有权和借用规则</h4><ul>
+<li>不能在同一作用域内同时拥有可变和不可变引用；</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">v</span> = <span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">first</span> = &amp;v[<span class="number">0</span>];	<span class="comment">// immutable borrow occurs here</span></span><br><span class="line">    v.<span class="title function_ invoke__">push</span>(<span class="number">6</span>);	<span class="comment">// 报错：mutable borrow occurs here</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The first element is &#123;&#125;&quot;</span>,first);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于Vector中的值在内存中连续存储，所以当往数组尾部push数据时，数组地址可能会迁移，头节点的地址会改变。</p>
+<h4 id="1-6-遍历Vector"><a href="#1-6-遍历Vector" class="headerlink" title="1.6 遍历Vector"></a>1.6 遍历Vector</h4><ul>
+<li>for 循环</li>
+</ul>
+<h4 id="1-7-使用enum存储多种数据类型"><a href="#1-7-使用enum存储多种数据类型" class="headerlink" title="1.7 使用enum存储多种数据类型"></a>1.7 使用enum存储多种数据类型</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">SpreadsheetCell</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">Int</span>(<span class="type">i32</span>),</span><br><span class="line">    <span class="title function_ invoke__">Float</span>(<span class="type">f64</span>),</span><br><span class="line">    <span class="title function_ invoke__">Text</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">row</span> = <span class="built_in">vec!</span>[</span><br><span class="line">        SpreadsheetCell::<span class="title function_ invoke__">Int</span>(<span class="number">3</span>),</span><br><span class="line">        SpreadsheetCell::<span class="title function_ invoke__">Float</span>(<span class="number">10.23</span>),</span><br><span class="line">        SpreadsheetCell::<span class="title function_ invoke__">Text</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;blue&quot;</span>)),</span><br><span class="line">    ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、String类型"><a href="#二、String类型" class="headerlink" title="二、String类型"></a>二、String类型</h3><h4 id="0-Rust开发者经常会被字符串困扰原因"><a href="#0-Rust开发者经常会被字符串困扰原因" class="headerlink" title="0. Rust开发者经常会被字符串困扰原因"></a>0. Rust开发者经常会被字符串困扰原因</h4><ol>
+<li>Rust 倾向于暴露可能的错误；</li>
+<li>字符串数据结构复杂；</li>
+<li>UTF-8;</li>
+</ol>
+<h4 id="1-字符串是什么？"><a href="#1-字符串是什么？" class="headerlink" title="1. 字符串是什么？"></a>1. 字符串是什么？</h4><ul>
+<li><strong>语言核心部分</strong>：字符串切片<code>str </code> ，通常以借用的形式（<code>&amp;str</code>）出现，指向存储在别处的utf-8编码字符串的引用；</li>
+<li><strong>标准库中</strong>：<code>String</code>类型；</li>
+</ul>
+<h4 id="2-创建一个新的字符串"><a href="#2-创建一个新的字符串" class="headerlink" title="2. 创建一个新的字符串"></a>2. 创建一个新的字符串</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello world&quot;</span>);<span class="comment">//	方法一</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s2</span> = <span class="string">&quot;hello world&quot;</span>.<span class="title function_ invoke__">to_string</span>();<span class="comment">// 方法二</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-更新String"><a href="#3-更新String" class="headerlink" title="3. 更新String"></a>3. 更新String</h4><ul>
+<li><p><code>push_str()</code>方法：把一个字符串切片附加到String;</p>
+</li>
+<li><p><code>push()</code>方法：把单个字符附加到 String;</p>
+</li>
+<li><p><code>+</code> : 连接字符串：夺取第一个数据所有权；</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Hello,&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;world!&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s3</span> = s1 + &amp;s2; <span class="comment">//	注意，这里的s1已经被移动且再也不能被使用了！</span></span><br></pre></td></tr></table></figure>
+
+<p>我们在加法操作中仅对s2采用了引用，而s1在加法操作之后则不再有效。这里的<code>+</code>运算符会调用一个<code>add()</code>方法:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">add</span>(<span class="keyword">self</span>, s:&amp;<span class="type">str</span>)<span class="punctuation">-&gt;</span><span class="type">String</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>format!</code> 宏：不会夺取任何参数所有权；</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;tic&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;tac&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s3</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;toe&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;-&#123;&#125;-&#123;&#125;&quot;</span>,s1,s2,s3);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="4-字符串索引"><a href="#4-字符串索引" class="headerlink" title="4. 字符串索引"></a>4. 字符串索引</h4><p>Rust 中的字符串并不支持索引！</p>
+<ol>
+<li><p><strong>字符串中字节的索引并不总是对应到一个有效的<code>Unicode</code>标量值</strong>，String 实际上是一个基于Vec<u8>的封装类型，使用<code>UTF-8</code>编码！</p>
+</li>
+<li><p><strong>字节、标量值、字形簇</strong>！</p>
+<ul>
+<li>字节： u8</li>
+<li>标量值：char</li>
+<li>字形簇：最接近人们眼中的 字母。</li>
+</ul>
+</li>
+<li><p><strong>无法保障索引性能</strong>，因为Rust必须要遍历从头至索引位置的整个内容来确定究竟有多少合法的字符存在。</p>
+</li>
+</ol>
+<h4 id="5-字符串切片"><a href="#5-字符串切片" class="headerlink" title="5. 字符串切片"></a>5. 字符串切片</h4><p>通过索引引用字符串通常是一个坏主意，因为字符串索引操作应当返回的类型是不明确的：究竟应该是字节、字符还是字形簇？</p>
+<ul>
+<li>切片时范围语法不当会导致程序panic;</li>
+</ul>
+<h4 id="6-遍历字符串"><a href="#6-遍历字符串" class="headerlink" title="6. 遍历字符串"></a>6. 遍历字符串</h4><ul>
+<li><code>&quot;&quot;.chars()</code>;</li>
+<li><code>&quot;&quot;.bytes()</code>;</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rust/" rel="tag"># Rust</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/15/220820-1-Rust%E5%AD%A6%E4%B9%A0-1-%E5%BC%95%E8%A8%80/" rel="prev" title="Rust学习_1.引言">
+                  <i class="fa fa-chevron-left"></i> Rust学习_1.引言
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/20/220820-3-Rust%E5%AD%A6%E4%B9%A0-3%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" rel="next" title="Rust学习_3.错误处理">
+                  Rust学习_3.错误处理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="将一个功能模块化提供给其他的应用使用是我们经常会遇到的需求，这个笔记记录了如何开发angular第三方插件，包括插件开发、npm发布、应用案例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular第三方包开发">
+<meta property="og:url" content="https://suilandcoder.github.io/2019/02/18/angular%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="将一个功能模块化提供给其他的应用使用是我们经常会遇到的需求，这个笔记记录了如何开发angular第三方插件，包括插件开发、npm发布、应用案例。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-18T08:38:21.000Z">
+<meta property="article:modified_time" content="2022-08-20T05:16:26.096Z">
+<meta property="article:author" content="SongJie">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2019/02/18/angular%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E5%BC%80%E5%8F%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2019/02/18/angular%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E5%BC%80%E5%8F%91/","path":"2019/02/18/angular第三方包开发/","title":"angular第三方包开发"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>angular第三方包开发 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BC%80%E5%8F%91%E5%9F%BA%E4%BA%8Eangular%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="nav-text">1 开发基于angular的插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">1.1 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%B7%BB%E5%8A%A0-angular-%E6%89%80%E9%9C%80%E4%BE%9D%E8%B5%96"><span class="nav-text">1.2 添加 angular 所需依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="nav-text">1.3 项目开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-text">1.3.1 开发插件功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-%E6%94%AF%E6%8C%81TypeScript"><span class="nav-text">1.3.2 支持TypeScript</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD"><span class="nav-text">1.3.3 导出功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-%E7%BC%96%E8%AF%91%E6%89%93%E5%8C%85"><span class="nav-text">1.3.4 编译打包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%8F%91%E5%B8%83%E6%8F%92%E4%BB%B6"><span class="nav-text">2 发布插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-npm-%E8%B4%A6%E5%8F%B7"><span class="nav-text">2.1 npm 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%AE%8C%E5%96%84%E5%8C%85%E4%BF%A1%E6%81%AF"><span class="nav-text">2.2 完善包信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E9%80%89%E6%8B%A9%E6%80%A7%E5%8F%91%E5%B8%83"><span class="nav-text">2.3 选择性发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%89%A7%E8%A1%8C%E5%8F%91%E5%B8%83%E5%91%BD%E4%BB%A4"><span class="nav-text">2.4 执行发布命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%95%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-text">3 引用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="nav-text">3.1 安装插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%BC%95%E5%85%A5%E5%88%B0%E9%A1%B9%E7%9B%AE%E4%B8%AD%EF%BC%9A"><span class="nav-text">3.2 引入到项目中：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-html%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="nav-text">3.3 html中使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83"><span class="nav-text">4 参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2019/02/18/angular%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="angular第三方包开发 | Zero">
+      <meta itemprop="description" content="将一个功能模块化提供给其他的应用使用是我们经常会遇到的需求，这个笔记记录了如何开发angular第三方插件，包括插件开发、npm发布、应用案例。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          angular第三方包开发
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-18 16:38:21" itemprop="dateCreated datePublished" datetime="2019-02-18T16:38:21+08:00">2019-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 13:16:26" itemprop="dateModified" datetime="2022-08-20T13:16:26+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/angular/" itemprop="url" rel="index"><span itemprop="name">angular</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">将一个功能模块化提供给其他的应用使用是我们经常会遇到的需求，这个笔记记录了如何开发angular第三方插件，包括插件开发、npm发布、应用案例。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前几天大师兄说需要将已经开发完成的<code>Saga在线工具</code>模块化，提供给其他平台使用。所以打算先开发一个angular版本的插件试试。</p>
+<p>以下为开发angular插件的教程：</p>
+<h2 id="1-开发基于angular的插件"><a href="#1-开发基于angular的插件" class="headerlink" title="1 开发基于angular的插件"></a>1 开发基于angular的插件</h2><h3 id="1-1-初始化"><a href="#1-1-初始化" class="headerlink" title="1.1 初始化"></a>1.1 初始化</h3><p>在本地电脑中选择开发目录，开始初始化，cmd下：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> ng-test-plugin</span><br><span class="line"><span class="built_in">cd</span> ng-test-plugin</span><br><span class="line">npm init</span><br></pre></td></tr></table></figure>
+<p>在<code>npm init</code>之后需要填写第三方包的基本信息，项目名不可以大写，如果不填写可直接回车。执行完毕后项目中只有一个package.json。</p>
+<blockquote>
+<p>注意：如果第三方包要发布到 npm 上，项目名在npm上已存在会导致发布失败。</p>
+</blockquote>
+<h3 id="1-2-添加-angular-所需依赖"><a href="#1-2-添加-angular-所需依赖" class="headerlink" title="1.2 添加 angular 所需依赖"></a>1.2 添加 angular 所需依赖</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --dev typescript@latest @angular/core @angular/common rxjs zone.js</span><br></pre></td></tr></table></figure>
+<p>此时安装的包并不需要发布，发布时只发布代码，需要在<code>package.json</code>中配置<code>peerDependencies</code>作为前置依赖，但包本身不会实际安装这些依赖，实际的包应该由应用项目来安装，现在把<code>peerDependencies</code>添加进<code>package.json</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;peerDependencies&quot;: &#123;</span><br><span class="line">    &quot;@angular/common&quot;: &quot;&gt;=5.0.0&quot;,</span><br><span class="line">    &quot;@angular/core&quot;: &quot;&gt;=5.0.0&quot;,</span><br><span class="line">    &quot;rxjs&quot;: &quot;&gt;=5.0.0&quot;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-项目开发"><a href="#1-3-项目开发" class="headerlink" title="1.3 项目开发"></a>1.3 项目开发</h3><h4 id="1-3-1-开发插件功能"><a href="#1-3-1-开发插件功能" class="headerlink" title="1.3.1 开发插件功能"></a>1.3.1 开发插件功能</h4><p>根目录创建lib文件夹，并在文件夹下创建<code>fivering.component.ts</code>和<code>fivering.module.ts</code>文件</p>
+<p><code>fivering.component.ts</code>文件:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Component</span>, <span class="title class_">OnInit</span>, <span class="title class_">Input</span>, <span class="title class_">Output</span>, <span class="title class_">EventEmitter</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@angular/core&#x27;</span></span><br><span class="line">@<span class="title class_">Component</span>(&#123;</span><br><span class="line">  <span class="attr">selector</span>: <span class="string">&#x27;app-fivering&#x27;</span>,</span><br><span class="line">  <span class="attr">template</span>: <span class="string">`</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;five-rings&quot;&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;ring1&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;ring2&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;ring3&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;ring4&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;ring5&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">            `</span>,</span><br><span class="line">  <span class="attr">styles</span>: [<span class="string">&#x27;.five-rings&#123;position:fixed;top: 50%;left:50%;width: 290px;height: 130px;margin-top: -65px;margin-left:-145px;&#125; .ring1,.ring2,.ring3,.ring4,.ring5&#123;position: absolute; width: 80px;height: 80px;border-radius: 50%;border:5px solid;&#125;  .ring1&#123;\</span></span><br><span class="line"><span class="string">    border-color: purple;\</span></span><br><span class="line"><span class="string">  &#125;\</span></span><br><span class="line"><span class="string">  .ring2&#123;\</span></span><br><span class="line"><span class="string">    left: 100px;\</span></span><br><span class="line"><span class="string">    border-color: black;\</span></span><br><span class="line"><span class="string">  &#125;\</span></span><br><span class="line"><span class="string">  .ring3&#123;\</span></span><br><span class="line"><span class="string">    left: 200px;\</span></span><br><span class="line"><span class="string">    border-color: red;\</span></span><br><span class="line"><span class="string">  &#125;\</span></span><br><span class="line"><span class="string">  .ring4&#123;\</span></span><br><span class="line"><span class="string">    top: 45px;\</span></span><br><span class="line"><span class="string">    left: 50px;\</span></span><br><span class="line"><span class="string">    border-color: yellow;\</span></span><br><span class="line"><span class="string">  &#125;\</span></span><br><span class="line"><span class="string">  .ring5&#123;\</span></span><br><span class="line"><span class="string">    top: 45px;\</span></span><br><span class="line"><span class="string">    left: 150px;\</span></span><br><span class="line"><span class="string">    border-color: green;\</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">FiveRingComponent</span> implements <span class="title class_">OnInit</span> &#123;</span><br><span class="line">  show_rings = <span class="literal">false</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">  <span class="title function_">ngOnInit</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>fivering.module.ts</code>文件:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">FiveRingComponent</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./fivering.component&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">CommonModule</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@angular/common&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">NgModule</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@angular/core&#x27;</span>;</span><br><span class="line"></span><br><span class="line">@<span class="title class_">NgModule</span>(&#123;</span><br><span class="line">    <span class="attr">declarations</span>: [</span><br><span class="line">        <span class="title class_">FiveRingComponent</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">imports</span>: [</span><br><span class="line">        <span class="title class_">CommonModule</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">providers</span>: [],</span><br><span class="line">    <span class="attr">exports</span>: [<span class="title class_">FiveRingComponent</span>],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">FiveRingModule</span> &#123; &#125;  </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-支持TypeScript"><a href="#1-3-2-支持TypeScript" class="headerlink" title="1.3.2 支持TypeScript"></a>1.3.2 支持TypeScript</h4><p>为了支持<code>TypeScript</code>,还需要一个<code>tsconfig.json</code>:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.&quot;</span><span class="punctuation">,</span> <span class="comment">// 基于哪个目录编译ts</span></span><br><span class="line">    <span class="attr">&quot;declaration&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 是否生成声明文件即*.d.ts文件，有了它才有TS的代码提示</span></span><br><span class="line">    <span class="attr">&quot;experimentalDecorators&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 用于支持TS装饰器如angular中的 @NgModule(&#123;&#125;) 之类</span></span><br><span class="line">    <span class="attr">&quot;emitDecoratorMetadata&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 用于支持TS装饰器如angular中的 @NgModule(&#123;&#125;) 之类</span></span><br><span class="line">    <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="string">&quot;commonjs&quot;</span><span class="punctuation">,</span> <span class="comment">// 模块化形式</span></span><br><span class="line">    <span class="attr">&quot;moduleResolution&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span> <span class="comment">// 模块化形式</span></span><br><span class="line">    <span class="attr">&quot;rootDir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.&quot;</span><span class="punctuation">,</span> <span class="comment">// 以哪个目录为根</span></span><br><span class="line">    <span class="attr">&quot;lib&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;es2015&quot;</span><span class="punctuation">,</span> <span class="string">&quot;dom&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span> <span class="comment">// 支持编译的内置库</span></span><br><span class="line">    <span class="attr">&quot;skipDefaultLibCheck&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 是否跳过内置库检查</span></span><br><span class="line">    <span class="attr">&quot;skipLibCheck&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 跳过库检查</span></span><br><span class="line">    <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;es5&quot;</span><span class="punctuation">,</span> <span class="comment">// 编译目标版本</span></span><br><span class="line">    <span class="attr">&quot;suppressImplicitAnyIndexErrors&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 几个检查代码的规则</span></span><br><span class="line">    <span class="attr">&quot;strictNullChecks&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 几个检查代码的规则</span></span><br><span class="line">    <span class="attr">&quot;noImplicitAny&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 几个检查代码的规则</span></span><br><span class="line">    <span class="attr">&quot;sourceMap&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 是否生成 .js.map</span></span><br><span class="line">    <span class="attr">&quot;removeComments&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> <span class="comment">// 移除注释</span></span><br><span class="line">    <span class="attr">&quot;noFallthroughCasesInSwitch&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span> <span class="comment">// 几个检查代码的规则</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;exclude&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span>  <span class="comment">// 编译时排除以下内容</span></span><br><span class="line">    <span class="string">&quot;node_modules&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;*.d.ts&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;**/*.d.ts&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-3-导出功能"><a href="#1-3-3-导出功能" class="headerlink" title="1.3.3 导出功能"></a>1.3.3 导出功能</h4><p>功能完成后需要导出，让其他项目引用，所以在项目根目录下创建一个<code>index.ts</code>文件，文件内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">&#x27;./lib/fivering.module&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-4-编译打包"><a href="#1-3-4-编译打包" class="headerlink" title="1.3.4 编译打包"></a>1.3.4 编译打包</h4><p>修改<code>package.json</code>中的<code>script</code>方便编译打包：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;prepublish&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run clean &amp;&amp; tsc&quot;</span><span class="punctuation">,</span> <span class="comment">//清理并编译</span></span><br><span class="line">  <span class="attr">&quot;clean&quot;</span><span class="punctuation">:</span> <span class="string">&quot;rimraf index.js index.js.map index.d.ts lib/**/*.js lib/**/*.js.map lib/**/*.d.ts *.tgz&quot;</span><span class="punctuation">,</span> <span class="comment">//清理编译文件</span></span><br><span class="line">  <span class="attr">&quot;link&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run pack &amp;&amp; tar -zxf linktest.tgz &amp;&amp; rimraf ../lib-test-app/node_modules/ng-test-plugin &amp;&amp; mv package ../lib-test-app/node_modules/ng-test-plugin&quot;</span><span class="punctuation">,</span><span class="comment">//打包后解压并移动到测试项目的node_modules中，tar -zxf 为解压命令，rimraf为删除命令，mv为移动命令</span></span><br><span class="line">  <span class="attr">&quot;pack&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run prepublish &amp;&amp; npm pack&quot;</span>  <span class="comment">//执行编译并打包成压缩包</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>执行时，使用<code>npm run prepublish</code>形式，clean命令需要先安装<code>rimraf</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install rimraf -g</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-发布插件"><a href="#2-发布插件" class="headerlink" title="2 发布插件"></a>2 发布插件</h2><h3 id="2-1-npm-账号"><a href="#2-1-npm-账号" class="headerlink" title="2.1 npm 账号"></a>2.1 npm 账号</h3><ol>
+<li><p>注册npm账号： 地址：<a target="_blank" rel="noopener" href="https://www.npmjs.com/">https://www.npmjs.com</a></p>
+</li>
+<li><p>进入项目根目录下打开终端</p>
+<p> 运行：<code>npm login</code></p>
+<p> 输入账号、密码、邮箱</p>
+</li>
+<li><p>可使用 <code>npm whoami</code> 命令确认身份</p>
+</li>
+</ol>
+<h3 id="2-2-完善包信息"><a href="#2-2-完善包信息" class="headerlink" title="2.2 完善包信息"></a>2.2 完善包信息</h3><p>完善<code>package.json</code>，包括开源许可、包名、作者、版本号等，最重要直接影响发布的是版本号。</p>
+<h3 id="2-3-选择性发布"><a href="#2-3-选择性发布" class="headerlink" title="2.3 选择性发布"></a>2.3 选择性发布</h3><p>基于<code>angular</code>的第三方包区别与普通的js包最大的地方就在于，不能直接把整个包都发布到npm，这样会导致奇怪错误，原因在于.ts文件，实际上需要发布的只是<code>.js、.js.map、.d.ts</code>这三种类型的文件就够了。</p>
+<p>因为在其他项目中不一定会使用<code>TypeScript</code>，即使用了也不会刻意包含<code>node_modules</code>目录，也就是说其他项目只管使用，编译的活由我们得包自己来做，相反要是我们还发布多余的.ts文件，只会导致错误。</p>
+<p>为了做到选择性发布，需要一个<code>.npmignore</code>文件，和<code>.gitignore</code>配合用来忽略上传的文件，一般这些编译输出我们会添加在<code>.gitignore</code>中，若项目不存在<code>.npmignore</code>，发布到npm时也会使用<code>.gitignore</code>，这不是我们想要的，所以需要再创建这个<code>.npmignore</code>来忽略.ts文件而包含编译输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">node_modules</span><br><span class="line">yarn-error.log</span><br><span class="line">tsconfig.json</span><br><span class="line">.gitignore</span><br><span class="line">.npmignore</span><br><span class="line">yarn.lock</span><br><span class="line">*.ts</span><br><span class="line">!*.d.ts</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-执行发布命令"><a href="#2-4-执行发布命令" class="headerlink" title="2.4 执行发布命令"></a>2.4 执行发布命令</h3><p>将插件项目发布到<code>npm</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run prepublish</span><br><span class="line">npm publish</span><br></pre></td></tr></table></figure>
+<h2 id="3-引用插件"><a href="#3-引用插件" class="headerlink" title="3 引用插件"></a>3 引用插件</h2><h3 id="3-1-安装插件"><a href="#3-1-安装插件" class="headerlink" title="3.1 安装插件"></a>3.1 安装插件</h3><p>在需要引用插件的项目中执行以下命令安装插件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install ng-test-plugin</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-引入到项目中："><a href="#3-2-引入到项目中：" class="headerlink" title="3.2 引入到项目中："></a>3.2 引入到项目中：</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">FiveRingModule</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;ng-test-sj&#x27;</span>;    <span class="comment">//这里</span></span><br><span class="line">@<span class="title class_">NgModule</span>(&#123;</span><br><span class="line">  <span class="attr">declarations</span>: [</span><br><span class="line">    <span class="title class_">AppComponent</span>,</span><br><span class="line">    <span class="title class_">SagaPluginComponent</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">imports</span>: [</span><br><span class="line">    <span class="title class_">BrowserModule</span>,</span><br><span class="line">    <span class="title class_">FiveRingModule</span>  <span class="comment">// 这里</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">providers</span>: [],</span><br><span class="line">  <span class="attr">bootstrap</span>: [<span class="title class_">AppComponent</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AppModule</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-html中使用"><a href="#3-3-html中使用" class="headerlink" title="3.3 html中使用"></a>3.3 html中使用</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app-fivering</span>&gt;</span><span class="tag">&lt;/<span class="name">app-fivering</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8c5619474584">Yitimo - 简书：angular第三方包开发整理</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7e0a95317deb">essential_note - 简书：组件的工程化（开发第三方angular包）</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/18/%E5%BD%93%E4%BD%A0%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5google-com%E5%B9%B6%E6%8C%89%E4%B8%8B%E5%9B%9E%E8%BD%A6%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-md/" rel="prev" title="当你在浏览器输入google.com并按下回车后发生了什么">
+                  <i class="fa fa-chevron-left"></i> 当你在浏览器输入google.com并按下回车后发生了什么
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/28/190228-1-%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E9%80%82%E5%90%88%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A0%94%E7%A9%B6%E9%A2%86%E5%9F%9F/" rel="next" title="1.如何发现适合自己的研究领域">
+                  1.如何发现适合自己的研究领域 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

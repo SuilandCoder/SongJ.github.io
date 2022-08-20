@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Rust之错误处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust学习_3.错误处理">
+<meta property="og:url" content="https://suilandcoder.github.io/2021/12/20/220820-3-Rust%E5%AD%A6%E4%B9%A0-3%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="Rust之错误处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-20T08:15:24.000Z">
+<meta property="article:modified_time" content="2022-08-20T08:37:39.714Z">
+<meta property="article:author" content="SongJie">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2021/12/20/220820-3-Rust%E5%AD%A6%E4%B9%A0-3%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2021/12/20/220820-3-Rust%E5%AD%A6%E4%B9%A0-3%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/","path":"2021/12/20/220820-3-Rust学习-3错误处理/","title":"Rust学习_3.错误处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Rust学习_3.错误处理 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-text">Rust 错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%94%99%E8%AF%AF%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-text">一、错误的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%8D%E5%8F%AF%E6%81%A2%E5%A4%8D%E7%9A%84%E9%94%99%E8%AF%AF%E4%B8%8Epanic"><span class="nav-text">二、不可恢复的错误与panic!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%BD%93-panic-%E5%AE%8F%E6%89%A7%E8%A1%8C%EF%BC%9A"><span class="nav-text">1. 当 panic!宏执行：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%BA%E5%BA%94%E5%AF%B9panic%EF%BC%8C%E5%B1%95%E5%BC%80%E6%88%96%E4%B8%AD%E6%AD%A2%E8%B0%83%E7%94%A8%E6%A0%88"><span class="nav-text">2. 为应对panic，展开或中止调用栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81Result-%E6%9E%9A%E4%B8%BE%E4%B8%8E%E5%8F%AF%E6%81%A2%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="nav-text">三、Result 枚举与可恢复错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Result-%E6%9E%9A%E4%B8%BE"><span class="nav-text">1. Result 枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A4%84%E7%90%86Result%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8Cmatch%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">2. 处理Result的一种方式，match表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-unwrap"><span class="nav-text">3. unwrap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-expect-%E5%8F%AF%E4%BB%A5%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84unwrap"><span class="nav-text">4. expect 可以自定义的unwrap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BC%A0%E6%92%AD%E9%94%99%E8%AF%AF"><span class="nav-text">四、传播错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B0%86%E9%94%99%E8%AF%AF%E8%BF%94%E5%9B%9E%E7%BB%99%E8%B0%83%E7%94%A8%E8%80%85"><span class="nav-text">1. 将错误返回给调用者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">2. ?运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%B8%8Efrom%E5%87%BD%E6%95%B0"><span class="nav-text">3. ?与from函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B8%8Emain%E5%87%BD%E6%95%B0"><span class="nav-text">4. ?运算符与main函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8panic"><span class="nav-text">五、 什么时候使用panic!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%80%BB%E4%BD%93%E5%8E%9F%E5%88%99"><span class="nav-text">1. 总体原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99%E7%A4%BA%E4%BE%8B%E3%80%81%E5%8E%9F%E5%9E%8B%E4%BB%A3%E7%A0%81%E3%80%81%E6%B5%8B%E8%AF%95"><span class="nav-text">2. 编写示例、原型代码、测试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2021/12/20/220820-3-Rust%E5%AD%A6%E4%B9%A0-3%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Rust学习_3.错误处理 | Zero">
+      <meta itemprop="description" content="Rust之错误处理">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust学习_3.错误处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-20 16:15:24" itemprop="dateCreated datePublished" datetime="2021-12-20T16:15:24+08:00">2021-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 16:37:39" itemprop="dateModified" datetime="2022-08-20T16:37:39+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Rust之错误处理</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h2><h3 id="一、错误的分类"><a href="#一、错误的分类" class="headerlink" title="一、错误的分类"></a>一、错误的分类</h3><ul>
+<li>可恢复（例如文件未找到）；<ul>
+<li>Result&lt;T,E&gt;</li>
+</ul>
+</li>
+<li>不可恢复（bug，例如访问索引超限）；<ul>
+<li>panic!</li>
+</ul>
+</li>
+</ul>
+<h3 id="二、不可恢复的错误与panic"><a href="#二、不可恢复的错误与panic" class="headerlink" title="二、不可恢复的错误与panic!"></a>二、不可恢复的错误与panic!</h3><h4 id="1-当-panic-宏执行："><a href="#1-当-panic-宏执行：" class="headerlink" title="1. 当 panic!宏执行："></a>1. 当 panic!宏执行：</h4><ul>
+<li>你的程序会打印一个错误信息；</li>
+<li>展开（unwind）、清理调用栈（Stack）；</li>
+<li>退出程序</li>
+</ul>
+<h4 id="2-为应对panic，展开或中止调用栈"><a href="#2-为应对panic，展开或中止调用栈" class="headerlink" title="2. 为应对panic，展开或中止调用栈"></a>2. 为应对panic，展开或中止调用栈</h4><ul>
+<li>默认情况下，当panic发生：<ul>
+<li>程序展开调用栈（工作量大）<ul>
+<li>Rust沿着调用栈往回走；</li>
+<li>清理每个遇到的函数中的数据；</li>
+</ul>
+</li>
+<li>或终止调用栈<ul>
+<li>不进行清理，直接停止程序；</li>
+<li>内存需要OS进行清理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>想让二进制文件更小，把设置从“展开”改为“中止“：<ul>
+<li>在 <code>Cargo.toml</code> 中适当的<code>profile</code>部分设置：<ul>
+<li>panic&#x3D;’abort’</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="三、Result-枚举与可恢复错误"><a href="#三、Result-枚举与可恢复错误" class="headerlink" title="三、Result 枚举与可恢复错误"></a>三、Result 枚举与可恢复错误</h3><h4 id="1-Result-枚举"><a href="#1-Result-枚举" class="headerlink" title="1. Result 枚举"></a>1. Result 枚举</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T,E&gt;&#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>T：操作成功情况下，Ok变体里返回的数据的类型；</li>
+<li>E：操作失败情况下，Err变体里返回的错误的类型；</li>
+</ul>
+<h4 id="2-处理Result的一种方式，match表达式"><a href="#2-处理Result的一种方式，match表达式" class="headerlink" title="2. 处理Result的一种方式，match表达式"></a>2. 处理<code>Result</code>的一种方式，<code>match</code>表达式</h4><h4 id="3-unwrap"><a href="#3-unwrap" class="headerlink" title="3. unwrap"></a>3. unwrap</h4><ul>
+<li>match 表达式的一个快捷方式</li>
+<li>如果Result结果是Ok,返回Ok里面的值；</li>
+<li>如果Result结果是Err,调用panic!宏；</li>
+<li>缺点：错误信息不能自定义！</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f</span> = <span class="keyword">match</span> f&#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file)=&gt;file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(error)=&gt;&#123;</span><br><span class="line">            <span class="built_in">panic!</span>(<span class="string">&quot;error opening file &#123;&#125;&quot;</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>).<span class="title function_ invoke__">unwrap</span>();	<span class="comment">// 等价于上面的代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-expect-可以自定义的unwrap"><a href="#4-expect-可以自定义的unwrap" class="headerlink" title="4. expect 可以自定义的unwrap"></a>4. expect 可以自定义的unwrap</h4><h3 id="四、传播错误"><a href="#四、传播错误" class="headerlink" title="四、传播错误"></a>四、传播错误</h3><h4 id="1-将错误返回给调用者"><a href="#1-将错误返回给调用者" class="headerlink" title="1. 将错误返回给调用者"></a>1. 将错误返回给调用者</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>()<span class="punctuation">-&gt;</span><span class="type">Result</span>&lt;<span class="type">String</span>,io::Error&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">f</span> = <span class="keyword">match</span> f&#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file)=&gt;file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e)=&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    <span class="keyword">match</span> f.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> s)&#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(_)=&gt;<span class="title function_ invoke__">Ok</span>(s),</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e)=&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-运算符"><a href="#2-运算符" class="headerlink" title="2. ?运算符"></a>2. <code>?</code>运算符</h4><p><code>?</code>运算符：传播错误的一种快捷方式；</p>
+<ul>
+<li>如果Result 是 Ok: Ok中的值就是表达式的结果，然后继续执行程序；</li>
+<li>如果Result 是Err：Err就是整个函数的返回值，就像使用了return;</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该函式等同于上面的函数</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>()<span class="punctuation">-&gt;</span><span class="type">Result</span>&lt;<span class="type">String</span>,io::Error&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">f</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?; <span class="comment">// ?运算符</span></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    f.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> s)?;	<span class="comment">// ?运算符</span></span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-与from函数"><a href="#3-与from函数" class="headerlink" title="3. ?与from函数"></a>3. <code>?</code>与<code>from</code>函数</h4><ul>
+<li><p>Trait std::convert::From 上的<code>from</code>函数;</p>
+<ul>
+<li>用于错误之间的转换</li>
+</ul>
+</li>
+<li><p>被<code>?</code>所应用的错误，会隐式的被<code>from</code>函数处理；</p>
+</li>
+<li><p>当<code>?</code>调用<code>from</code>函数时：</p>
+<ul>
+<li>它所接收的错误类型会转化为当前函数返回类型所定义的错误类型；</li>
+</ul>
+</li>
+<li><p>用于： 针对不同错误原因，返回同一种错误类型</p>
+<ul>
+<li>只要每个错误类型实现了转换为所返回的错误类型的<code>from</code>函数；</li>
+</ul>
+</li>
+<li><p>链式调用：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>()<span class="punctuation">-&gt;</span><span class="type">Result</span>&lt;<span class="type">String</span>,io::Error&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> s)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><code>?</code>运算符只能用于返回值为Result类型的函数</p>
+</li>
+</ul>
+<h4 id="4-运算符与main函数"><a href="#4-运算符与main函数" class="headerlink" title="4. ?运算符与main函数"></a>4. <code>?</code>运算符与<code>main</code>函数</h4><ul>
+<li><p>main 函数返回类型是（）;</p>
+</li>
+<li><p>main函数的返回类型也可以是：Result&lt;T,E&gt;;</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::error::Error;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()<span class="punctuation">-&gt;</span><span class="type">Result</span>&lt;(),<span class="type">Box</span>&lt;<span class="keyword">dyn</span> Error&gt;&gt;&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="五、-什么时候使用panic"><a href="#五、-什么时候使用panic" class="headerlink" title="五、 什么时候使用panic!"></a>五、 什么时候使用<code>panic!</code></h3><h4 id="1-总体原则"><a href="#1-总体原则" class="headerlink" title="1. 总体原则"></a>1. 总体原则</h4><ul>
+<li>在定义一个可能失败的函数时，优先考虑返回Result;</li>
+<li>否则就panic!</li>
+</ul>
+<h4 id="2-编写示例、原型代码、测试"><a href="#2-编写示例、原型代码、测试" class="headerlink" title="2. 编写示例、原型代码、测试"></a>2. 编写示例、原型代码、测试</h4><ul>
+<li>可以使用panic!<ul>
+<li>演示某些概念：unwrap；</li>
+<li>原型代码：unwrap、expect;</li>
+<li>测试：unwrap、expect;</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rust/" rel="tag"># Rust</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/16/220820-2-Rust%E5%AD%A6%E4%B9%A0-2%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/" rel="prev" title="Rust学习_2.通用集合类型">
+                  <i class="fa fa-chevron-left"></i> Rust学习_2.通用集合类型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/23/220820-4-Rust%E5%AD%A6%E4%B9%A0-4Trait/" rel="next" title="Rust学习_4.Trait">
+                  Rust学习_4.Trait <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

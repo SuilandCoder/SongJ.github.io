@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux 可以支持多种计算机系统，包括服务器、开发工作站、个人台式机系统等。为了统一这些不同系统的文件系统目录结构，大多数Linux系统使用统一的命名和使用标准，使系统更容易使用和维护。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux根目录文件夹含义">
+<meta property="og:url" content="https://suilandcoder.github.io/2019/06/10/190610-1-Linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%AB%E4%B9%89/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="Linux 可以支持多种计算机系统，包括服务器、开发工作站、个人台式机系统等。为了统一这些不同系统的文件系统目录结构，大多数Linux系统使用统一的命名和使用标准，使系统更容易使用和维护。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/5cf483fdgy1g3wd5llrmxj20g70gyad3.jpg">
+<meta property="article:published_time" content="2019-06-10T12:55:01.000Z">
+<meta property="article:modified_time" content="2022-08-20T05:16:24.761Z">
+<meta property="article:author" content="SongJie">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/5cf483fdgy1g3wd5llrmxj20g70gyad3.jpg">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2019/06/10/190610-1-Linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%AB%E4%B9%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2019/06/10/190610-1-Linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%AB%E4%B9%89/","path":"2019/06/10/190610-1-Linux根目录文件夹含义/","title":"Linux根目录文件夹含义"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux根目录文件夹含义 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A0%87%E5%87%86Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">1. 标准Linux目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%9B%AE%E5%BD%95%E5%90%AB%E4%B9%89%E5%92%8C%E7%94%A8%E9%80%94"><span class="nav-text">2. 目录含义和用途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">3. 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2019/06/10/190610-1-Linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%AB%E4%B9%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux根目录文件夹含义 | Zero">
+      <meta itemprop="description" content="Linux 可以支持多种计算机系统，包括服务器、开发工作站、个人台式机系统等。为了统一这些不同系统的文件系统目录结构，大多数Linux系统使用统一的命名和使用标准，使系统更容易使用和维护。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux根目录文件夹含义
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-10 20:55:01" itemprop="dateCreated datePublished" datetime="2019-06-10T20:55:01+08:00">2019-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 13:16:24" itemprop="dateModified" datetime="2022-08-20T13:16:24+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Linux 可以支持多种计算机系统，包括服务器、开发工作站、个人台式机系统等。为了统一这些不同系统的文件系统目录结构，大多数Linux系统使用统一的命名和使用标准，使系统更容易使用和维护。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-标准Linux目录结构"><a href="#1-标准Linux目录结构" class="headerlink" title="1. 标准Linux目录结构"></a>1. 标准Linux目录结构</h2><p>Linux 可以支持多种计算机系统，包括服务器、开发工作站、个人台式机系统等。为了统一这些不同系统的文件系统目录结构，大多数Linux系统使用统一的命名和使用标准，使系统更容易使用和维护。<br>下图1-1为Linux目录结构图：<br><img src="http://wx4.sinaimg.cn/mw690/5cf483fdgy1g3wd5llrmxj20g70gyad3.jpg" alt="图 1-1"></p>
+<h2 id="2-目录含义和用途"><a href="#2-目录含义和用途" class="headerlink" title="2. 目录含义和用途"></a>2. 目录含义和用途</h2><ul>
+<li><strong>&#x2F;</strong> <ul>
+<li>Linux的根目录，一台电脑有且只有一个根目录，所有的文件都是从这里开始的。举个例子：当你在终端里输入“&#x2F;home”，你其实是在告诉电脑，先从&#x2F;（根目录）开始，再进入到home目录。</li>
+</ul>
+</li>
+<li><strong>bin 和 &#x2F;usr&#x2F;bin</strong><ul>
+<li>大部分系统命令都以机器可读格式保存为二进制文件。一般用户使用的命令通常位于二进制目录<code>/bin</code>或<code>/usr/bin</code>中。系统必需的核心工具命令如<code>ls, cd, cp, mv</code>和文本编辑器<code>vi</code>都位于目录<code>/bin</code>中。辅助工具如编译器、网页浏览器和办公软件位于目录<code>/usr/bin</code>中，这些目录下的工具也可以通过网络共享给其他系统上的用户使用。我们可以将<code>/bin</code>和<code>/usr/bin</code>当成<strong>非特权命令目录</strong>，因为用户不需要有任何特权就可以使用其中的命令。</li>
+</ul>
+</li>
+<li><strong>boot</strong><ul>
+<li>目录中存放Ubuntu内核文件及引导加载器bootstraploade相关的文件，如果这个目录中的文件被破坏，一般都会出现启动引导异常，无法正常进入系统。root权限才能读写文件</li>
+</ul>
+</li>
+<li><strong>dev</strong><ul>
+<li>该目录包含了Linux系统中使用的所有外部设备，如设备,声卡、磁盘等，还有如<code>/dev/null.</code> <code>/dev/console</code> <code>/dev/zero</code> <code>/dev/full</code> 等。它实际上是访问这些外部设备的端口，访问这些外部设备与访问一个文件或一个目录没有区别。</li>
+</ul>
+</li>
+<li><strong>etc</strong><ul>
+<li>程序的配置文件目录，Linux 系统的特点之一是它的灵活性。通过修改配置文件，可以控制系统的任何方面。配置文件一般保存在配置目录<code>/etc</code>或它的子目录中。例如，系统启动脚本位于<code>/etc/rc.d</code>,网络配置文件位于目录<code>/etc/sysconfig</code>中。</li>
+</ul>
+</li>
+<li><strong>home</strong><ul>
+<li>用户主目录，这里主要存放你的个人数据。具体每个用户的设置文件，用户的桌面文件夹，还有用户的数据都放在这里。每个用户都有自己的用户目录，位置为：<code>/home/用户名</code>。当然，root用户除外。 用户主目录显著的作用是作为私人数据空间，他们可以用这个空间把他们的文件与其他用户的文件分开保存。因为每个用户都有自己的空间，所以两个用户可以将文件或目录取同样的名字而不会出现问题。用户主目录的另一个显著作用是保存用户特有的配置文件。</li>
+</ul>
+</li>
+<li><strong>lib</strong><ul>
+<li>动态链接共享库文件存放地。bin和sbin需要的库文件。类似windows的DLL。几乎所有的应用程序都会用到该目录下的共享库。</li>
+</ul>
+</li>
+<li><strong>mnt</strong><ul>
+<li>临时将别的文件系统挂在该目录下。这个目录一般是用于存放挂载储存设备的挂载目录的。</li>
+</ul>
+</li>
+<li><strong>opt</strong><ul>
+<li>这里主要存放一些可选的程序。第三方软件在安装时默认会找这个目录，安装到&#x2F;opt目录下的程序，它所有的数据、库文件等等都是放在同个目录下面。</li>
+</ul>
+</li>
+<li><strong>proc</strong><ul>
+<li>这是process的缩写，表示进程。存放的是系统信息和进程信息。可以在该目录下获取系统信息，这些信息是在内存中由系统自己产生的，操作系统运行时，进程（正在运行中的程序）信息及内核信息（比如cpu、硬盘分区、内存信息等）存放在这里。该目录的内容不在硬盘上而在内存里。</li>
+</ul>
+</li>
+<li><strong>root</strong><ul>
+<li>系统管理员（root user）的目录。超级管理员拥有最高级的权限，能够对系统中的几乎所有文件系统可读可写可执行的操作。</li>
+</ul>
+</li>
+<li><strong>sbin 和 &#x2F;usr&#x2F;sbin</strong><ul>
+<li>就如同<code>/bin 和 /usr/bin</code> 为一般用户保存命令文件一样，它们也为超级用户（根用户）保存命令文件。其中包括安装和删除硬件、启动和关闭系统以及进行系统维护的命令。和上面提到的将命令分别存放与<code>/bin</code> 和 <code>/usr/bin</code> 的原因一样，这些<code>特权命令</code>也是分别保存在两个目录中。</li>
+</ul>
+</li>
+<li><strong>tmp</strong><ul>
+<li>用来存放不同程序执行时产生的临时文件，一般系统重启不会被保存</li>
+</ul>
+</li>
+<li><strong>usr</strong><ul>
+<li>用户的应用程序和文件几乎都存放在该目录下,在这个目录下，你可以找到那些不适合放在<code>/bin</code>或<code>/etc</code>目录下的额外的工具。比如像游戏阿，一些打印工具等等。<code>/usr</code>目录包含了许多子目录： <code>/usr/bin</code>目录用于存放程序；<code>/usr/share</code>用于存放一些共享的数据，比如音乐文件或者图标等等；<code>/usr/lib</code>目录用于存放那些不能直接运行的，但却是许多程序运行所必需的一些函数库文件。你的软件包管理器会自动帮你管理好<code>/usr</code>目录的。</li>
+</ul>
+</li>
+<li><strong>var</strong><ul>
+<li>存放内容经常变化的文件和目录。例如日志，电子邮件，网站，ftp归档文件等。将这些文件放在这里便于给它们分配空间，同时也保护系统里其他比较稳定的文件。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><ol>
+<li>《Red Hat Linux 用户基础》</li>
+<li><a target="_blank" rel="noopener" href="https://chadliu.iteye.com/blog/2034149">iteye——ChadLiu:Linux根目录下各个文件夹的含义和用途.</a></li>
+<li><a target="_blank" rel="noopener" href="https://lsw521314.iteye.com/blog/1274923">iteye——lsw521314:Ubuntu下各个目录的一般作用</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cbqcbq69/p/9000210.html">博客园——程百球：Ubuntu根目录下各文件夹的作用</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/05/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%B9%B3%E5%8F%B0/" rel="prev" title="数据处理平台">
+                  <i class="fa fa-chevron-left"></i> 数据处理平台
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/12/190612-1-Linux%E5%AE%89%E8%A3%85MongoDB%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" rel="next" title="Linux安装MongoDB遇到的问题">
+                  Linux安装MongoDB遇到的问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

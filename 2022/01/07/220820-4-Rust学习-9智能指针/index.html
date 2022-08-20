@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Rust智能指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust学习_9.智能指针">
+<meta property="og:url" content="https://suilandcoder.github.io/2022/01/07/220820-4-Rust%E5%AD%A6%E4%B9%A0-9%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="Rust智能指针">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220107102334482.png">
+<meta property="article:published_time" content="2022-01-07T08:20:01.000Z">
+<meta property="article:modified_time" content="2022-08-20T08:38:26.240Z">
+<meta property="article:author" content="SongJie">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220107102334482.png">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2022/01/07/220820-4-Rust%E5%AD%A6%E4%B9%A0-9%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2022/01/07/220820-4-Rust%E5%AD%A6%E4%B9%A0-9%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/","path":"2022/01/07/220820-4-Rust学习-9智能指针/","title":"Rust学习_9.智能指针"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Rust学习_9.智能指针 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-text">智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%EF%BC%88reference-counting%EF%BC%89%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B"><span class="nav-text">引用计数（reference counting）智能指针类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E7%9A%84%E4%B8%8D%E5%90%8C%EF%BC%9A"><span class="nav-text">引用和智能指针的不同：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E7%9A%84%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-text">智能指针的例子：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="nav-text">智能指针的实现：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Box"><span class="nav-text">1. Box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Deref-Trait"><span class="nav-text">2. Deref Trait</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Rc-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-text">3. Rc 引用计数智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Rc%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">3.1 Rc使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="nav-text">3.2 注意：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E4%BE%8B%E5%AD%90"><span class="nav-text">3.3 例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-Rc-clone-VS-%E7%B1%BB%E5%9E%8B%E7%9A%84clone-%E6%96%B9%E6%B3%95"><span class="nav-text">3.4 Rc::clone()  VS 类型的clone()方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-RefCell%E5%92%8C%E5%86%85%E9%83%A8%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="nav-text">4. RefCell和内部可变性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%86%85%E9%83%A8%E5%8F%AF%E5%8F%98%E6%80%A7%EF%BC%88interior-mutability"><span class="nav-text">4.1 内部可变性（interior mutability)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-RefCell"><span class="nav-text">4.2 RefCell</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-RefCell%E4%B8%8EBox%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">4.2.1 RefCell与Box的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-%E5%80%9F%E7%94%A8%E8%A7%84%E5%88%99%E5%9C%A8%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E8%BF%9B%E8%A1%8C%E6%A3%80%E6%9F%A5%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-text">4.2.2 借用规则在不同阶段进行检查的比较</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-%E9%80%89%E6%8B%A9Box-Rc-RefCell%E7%9A%84%E4%BE%9D%E6%8D%AE"><span class="nav-text">4.2.3 选择Box,Rc,RefCell的依据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E5%86%85%E9%83%A8%E5%8F%AF%E5%8F%98%E6%80%A7%E6%A1%88%E4%BE%8B%EF%BC%9A"><span class="nav-text">4.3 内部可变性案例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-RefCell-%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E8%AE%B0%E5%BD%95%E5%80%9F%E7%94%A8%E4%BF%A1%E6%81%AF"><span class="nav-text">4.4 RefCell 在运行时记录借用信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E6%8B%A5%E6%9C%89%E5%A4%9A%E9%87%8D%E6%89%80%E6%9C%89%E6%9D%83%E7%9A%84%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E6%A1%88%E4%BE%8B%EF%BC%9ARc-lt-T-gt-RefCell-lt-T-gt"><span class="nav-text">4.5 拥有多重所有权的可变数据案例：Rc&lt;T&gt;+RefCell&lt;T&gt;</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2022/01/07/220820-4-Rust%E5%AD%A6%E4%B9%A0-9%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Rust学习_9.智能指针 | Zero">
+      <meta itemprop="description" content="Rust智能指针">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust学习_9.智能指针
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-07 16:20:01" itemprop="dateCreated datePublished" datetime="2022-01-07T16:20:01+08:00">2022-01-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 16:38:26" itemprop="dateModified" datetime="2022-08-20T16:38:26+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Rust智能指针</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><ul>
+<li>指针：一个变量在内存中包含的是一个地址（指向其他数据）；</li>
+<li>Rust里最常见的指针就是<strong>引用</strong>：<ul>
+<li>使用&amp;</li>
+<li>借用它指向的值</li>
+<li>没有其余开销</li>
+<li>最常见的指针类型</li>
+</ul>
+</li>
+<li>智能指针是这样一些<strong>数据结构</strong>：<ul>
+<li>行为和指针类似；</li>
+<li>有额外的元数据和功能；</li>
+</ul>
+</li>
+</ul>
+<h3 id="引用计数（reference-counting）智能指针类型"><a href="#引用计数（reference-counting）智能指针类型" class="headerlink" title="引用计数（reference counting）智能指针类型"></a>引用计数（reference counting）智能指针类型</h3><ul>
+<li>通过记录所有者的数量，使一份数据被多个所有者同时持有；</li>
+<li>并在没有任何所有者时自动清理数据。</li>
+</ul>
+<h3 id="引用和智能指针的不同："><a href="#引用和智能指针的不同：" class="headerlink" title="引用和智能指针的不同："></a>引用和智能指针的不同：</h3><ul>
+<li>引用：只借用数据；</li>
+<li>智能指针：很多时候拥有它所指向的数据；</li>
+</ul>
+<h3 id="智能指针的例子："><a href="#智能指针的例子：" class="headerlink" title="智能指针的例子："></a>智能指针的例子：</h3><ul>
+<li>String 和 Vec<T>；<ul>
+<li>都拥有一片内存区域，且允许用户对其操作；</li>
+<li>还拥有元数据（例如容量等）；</li>
+<li>提供额外的功能和保障（String 保障其数据是合法的UTF8编码）</li>
+</ul>
+</li>
+</ul>
+<h3 id="智能指针的实现："><a href="#智能指针的实现：" class="headerlink" title="智能指针的实现："></a>智能指针的实现：</h3><ul>
+<li>智能指针通常使用 struct 实现，并且实现了：<ul>
+<li>Deref 和 Drop 这两个 trait;</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Deref trait: 允许智能指针 struct 的实例像引用一样使用；（可以编写出同时用于引用和智能指针的代码）</p>
+<p>Drop trait: 允许自定义当智能指针实例走出作用域时的代码。</p>
+</blockquote>
+<h3 id="1-Box"><a href="#1-Box" class="headerlink" title="1. Box"></a>1. Box<T></h3><ul>
+<li><p>Box<T>是最简单的智能指针：</p>
+<ul>
+<li>将数据存储在堆上，并在栈中保留一个指向堆数据的指针；</li>
+<li>没有性能开销；</li>
+<li>没有其他额外功能；</li>
+<li>实现了 Deref trait 和 Drop trait。</li>
+</ul>
+</li>
+<li><p>Box<T> 的使用场景：</p>
+<ul>
+<li>在编译时，某类型的大小无法确定。但使用该类型时，上下文需要知道它的确切大小。例如：链表结构、树结构；</li>
+<li>当有大量数据，想移交所有权，但需要确保在操作时数据不会被复制；</li>
+<li>使用某值时，你只关心它是否实现了特定的trait，而不关心它的具体实现。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Deref-Trait"><a href="#2-Deref-Trait" class="headerlink" title="2. Deref Trait"></a>2. Deref Trait</h3><ul>
+<li>实现<code>Deref Trait</code> 使我们可以自定义解引用运算符 * 的行为；</li>
+<li>通过实现 <code>Deref</code> ，智能指针可像常规引用一样来处理。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">y</span> = &amp;x;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">z</span> = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(x);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>,*z);</span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>,*y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>MyBox<T></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">MyBox</span>&lt;T&gt; (T);</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; MyBox&lt;T&gt;&#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">new</span>(x:T)<span class="punctuation">-&gt;</span>MyBox&lt;T&gt;&#123;</span><br><span class="line">        <span class="title function_ invoke__">MyBox</span>(x)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> std::ops::Deref;</span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Deref <span class="keyword">for</span> <span class="title class_">MyBox</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Target</span> = T;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">deref</span>(&amp;<span class="keyword">self</span>)<span class="punctuation">-&gt;</span>&amp;T&#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.<span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">y</span> = MyBox::<span class="title function_ invoke__">new</span>(x);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>,*y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解引用转换 <code>deref coercion</code></p>
+<ul>
+<li><p>当某个类型T实现了Deref trait时，它能够将T的引用转换为T经过Deref操作后生成的引用。</p>
+</li>
+<li><p>调用函数和方法时，无需多次显示地使用&amp;和*运算符来进行引用和解引用操作。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">hello</span>(name:&amp;<span class="type">str</span>)&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, &#123;&#125;&quot;</span>,name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">m</span> = MyBox::<span class="title function_ invoke__">new</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Rust&quot;</span>));</span><br><span class="line">    <span class="title function_ invoke__">hello</span>(&amp;m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>解引用转换与可变性</p>
+<ul>
+<li>使用 <code>Deref trait</code> 能够重载不可变引用的 <code>*</code> 运算符。</li>
+<li>执行解引用转换的3中情形：<ul>
+<li>当<code>T:Deref&lt;Target=U&gt;</code>时，允许<code>&amp;T</code>转换为<code>&amp;U</code>；</li>
+<li>当<code>T:DerefMut&lt;Target=U&gt;</code>时，允许 <code>&amp;mut T </code>转换为<code> &amp;mut U</code>；</li>
+<li>当<code>T:Deref&lt;Target=U&gt;</code>时，允许<code>&amp;mut T</code>转换为<code>&amp;U</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-Rc-引用计数智能指针"><a href="#3-Rc-引用计数智能指针" class="headerlink" title="3. Rc 引用计数智能指针"></a>3. Rc<T> 引用计数智能指针</h3><p>为了支持多重所有权！<strong>通过不可变引用</strong>，使你可以在程序不同部分之间共享只读数据。</p>
+<h4 id="3-1-Rc使用场景"><a href="#3-1-Rc使用场景" class="headerlink" title="3.1 Rc使用场景"></a>3.1 Rc<T>使用场景</h4><ul>
+<li>需要在heap上分配数据，这些数据被程序的多个部分读取（只读），但在编译时无法确定哪个部分最后使用完这些数据。</li>
+<li>Rc<T>只能用于单线程场景。</li>
+</ul>
+<h4 id="3-2-注意："><a href="#3-2-注意：" class="headerlink" title="3.2 注意："></a>3.2 注意：</h4><ol>
+<li>Rc<T>不在预导入模块；</li>
+<li>Rc::clone(&amp;a) 函数：增加引用计数；</li>
+<li>Rc::strong_count(&amp;a)函数：获得引用计数；</li>
+<li>Rc::weak_count(&amp;a)函数；</li>
+</ol>
+<h4 id="3-3-例子"><a href="#3-3-例子" class="headerlink" title="3.3 例子"></a>3.3 例子</h4><p>两个List共享另一个List的所有权</p>
+<p><img src="C:\Users\SongJie\AppData\Roaming\Typora\typora-user-images\image-20220107102334482.png" alt="image-20220107102334482"></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">List</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">Cons</span>(<span class="type">i32</span>,Rc&lt;List&gt;),</span><br><span class="line">    Nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> crate::List::&#123;Cons,Nil&#125;;</span><br><span class="line"><span class="keyword">use</span> std::rc::Rc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = Rc::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">5</span>,Rc::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">10</span>,Rc::<span class="title function_ invoke__">new</span>(Nil)))));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = <span class="title function_ invoke__">Cons</span>(<span class="number">3</span>,Rc::<span class="title function_ invoke__">clone</span>(&amp;a));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">c</span> = <span class="title function_ invoke__">Cons</span>(<span class="number">4</span>,Rc::<span class="title function_ invoke__">clone</span>(&amp;a));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-4-Rc-clone-VS-类型的clone-方法"><a href="#3-4-Rc-clone-VS-类型的clone-方法" class="headerlink" title="3.4 Rc::clone()  VS 类型的clone()方法"></a>3.4 Rc::clone()  VS 类型的clone()方法</h4><ul>
+<li>Rc::clone()：增加引用，不会执行数据的深度拷贝操作；</li>
+<li>类型的clone(): 很多都会执行数据的深度拷贝操作；</li>
+</ul>
+<h3 id="4-RefCell和内部可变性"><a href="#4-RefCell和内部可变性" class="headerlink" title="4. RefCell和内部可变性"></a>4. RefCell<T>和内部可变性</h3><h4 id="4-1-内部可变性（interior-mutability"><a href="#4-1-内部可变性（interior-mutability" class="headerlink" title="4.1 内部可变性（interior mutability)"></a>4.1 内部可变性（interior mutability)</h4><ul>
+<li>内部可变性是Rust的设计模式之一；</li>
+<li>允许在持有不可变引用的前提下对数据进行修改<ul>
+<li>数据结构中使用了 <code>unsafe</code> 代码来绕过Rust 正常的可变性和借用规则。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-2-RefCell"><a href="#4-2-RefCell" class="headerlink" title="4.2 RefCell"></a>4.2 RefCell<T></h4><ul>
+<li>与 Rc<T>不同，RefCell<T>类型代表了其持有数据的唯一所有权。</li>
+<li>只能用于单线程场景！</li>
+</ul>
+<h5 id="4-2-1-RefCell与Box的区别"><a href="#4-2-1-RefCell与Box的区别" class="headerlink" title="4.2.1 RefCell与Box的区别"></a>4.2.1 RefCell<T>与Box<T>的区别</h5><table>
+<thead>
+<tr>
+<th>Box<T></th>
+<th align="left">RefCell<T></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>编译阶段</strong>强制代码遵守借用规则</td>
+<td align="left"><strong>运行阶段</strong>检查借用规则</td>
+</tr>
+<tr>
+<td>否则出现错误</td>
+<td align="left">否则触发 panic</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>借用规则：在任何给定时间里，要么只能拥有一个可变引用，要么持有任意数量的不可变引用；</p>
+</blockquote>
+<h5 id="4-2-2-借用规则在不同阶段进行检查的比较"><a href="#4-2-2-借用规则在不同阶段进行检查的比较" class="headerlink" title="4.2.2 借用规则在不同阶段进行检查的比较"></a>4.2.2 借用规则在不同阶段进行检查的比较</h5><table>
+<thead>
+<tr>
+<th>编译阶段</th>
+<th>运行时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>尽早暴露问题</td>
+<td>问题暴露延后，甚至到生产环境</td>
+</tr>
+<tr>
+<td>没有任何运行时开销</td>
+<td>因借用计数产生些许性能损失</td>
+</tr>
+<tr>
+<td>对大多数场景是最佳的</td>
+<td>实现某些特定的内存安全场景（不可变环境中修改自身数据）</td>
+</tr>
+<tr>
+<td>是Rust的默认行为</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="4-2-3-选择Box-Rc-RefCell的依据"><a href="#4-2-3-选择Box-Rc-RefCell的依据" class="headerlink" title="4.2.3 选择Box,Rc,RefCell的依据"></a>4.2.3 选择Box<T>,Rc<T>,RefCell<T>的依据</h5><table>
+<thead>
+<tr>
+<th></th>
+<th>Box<T></th>
+<th>Rc<T></th>
+<th>RefCell<T></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同一数据的所有者</td>
+<td>一个</td>
+<td>多个</td>
+<td>一个</td>
+</tr>
+<tr>
+<td>可变性、借用检查</td>
+<td>可变、不可变借用（编译时检查）</td>
+<td>不可变借用（编译时检查）</td>
+<td>可变、不可变借用（运行时检查）</td>
+</tr>
+</tbody></table>
+<h4 id="4-3-内部可变性案例："><a href="#4-3-内部可变性案例：" class="headerlink" title="4.3 内部可变性案例："></a>4.3 内部可变性案例：</h4><ul>
+<li><code>Trait Messenger</code> 中 <code>send()</code>方法接受一个不可变类型的引用，和一个字符串；</li>
+<li>但是，实现以上<code>Trait</code>的类<code>MockMessenger</code>，在实现<code>send()</code>方法时，需要修改自身属性的值，即需要使一个不可变引用可变。</li>
+<li>所以，可以将<code>MockMessenger</code>中需要修改的属性变为：<code>RefCell&lt;T&gt;</code></li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Messenger</span>&#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">send</span>(&amp;<span class="keyword">self</span>,msg:&amp;<span class="type">str</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">LimitTracker</span>&lt;<span class="symbol">&#x27;a</span>,T:<span class="symbol">&#x27;a</span>+Messenger&gt;&#123;</span><br><span class="line">    messenger:&amp;<span class="symbol">&#x27;a</span> T,</span><br><span class="line">    value:<span class="type">usize</span>,</span><br><span class="line">    max:<span class="type">usize</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;<span class="symbol">&#x27;a</span>,T&gt; LimitTracker&lt;<span class="symbol">&#x27;a</span>,T&gt;</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">T:Messenger,</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">new</span>(messenger:&amp;T,max:<span class="type">usize</span>)<span class="punctuation">-&gt;</span>LimitTracker&lt;T&gt;&#123;</span><br><span class="line">        LimitTracker&#123;</span><br><span class="line">            messenger,</span><br><span class="line">            value:<span class="number">0</span>,</span><br><span class="line">            max</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">set_value</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>,value:<span class="type">usize</span>)&#123;</span><br><span class="line">        <span class="keyword">self</span>.value = value;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">percentage_of_max</span> = <span class="keyword">self</span>.value <span class="keyword">as</span> <span class="type">f64</span>/<span class="keyword">self</span>.max <span class="keyword">as</span> <span class="type">f64</span>;</span><br><span class="line">        <span class="keyword">if</span> percentage_of_max &gt;= <span class="number">1.0</span>&#123;</span><br><span class="line">            <span class="keyword">self</span>.messenger.<span class="title function_ invoke__">send</span>(<span class="string">&quot;Error, you are over your quota!&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> percentage_of_max&gt;=<span class="number">0.9</span>&#123;</span><br><span class="line">            <span class="keyword">self</span>.messenger.<span class="title function_ invoke__">send</span>(<span class="string">&quot;Urgent warning:you&#x27;ve used up over 90% of your quota! &quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> percentage_of_max&gt;=<span class="number">0.75</span>&#123;</span><br><span class="line">            <span class="keyword">self</span>.messenger.<span class="title function_ invoke__">send</span>(<span class="string">&quot;warning: you&#x27;ve used up over 75% of your quota!&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[cfg(test)]</span></span><br><span class="line"><span class="keyword">mod</span> tests&#123;</span><br><span class="line">    <span class="keyword">use</span> super::*;</span><br><span class="line">    <span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">MockMessenger</span>&#123;</span><br><span class="line">        send_messages:RefCell&lt;<span class="type">Vec</span>&lt;<span class="type">String</span>&gt;&gt;,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">impl</span> <span class="title class_">MockMessenger</span>&#123;</span><br><span class="line">        <span class="keyword">fn</span> <span class="title function_">new</span>()<span class="punctuation">-&gt;</span>MockMessenger&#123;</span><br><span class="line">            MockMessenger&#123;</span><br><span class="line">                send_messages:RefCell::<span class="title function_ invoke__">new</span>(<span class="built_in">vec!</span>[]),</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">impl</span> <span class="title class_">Messenger</span> <span class="keyword">for</span> <span class="title class_">MockMessenger</span>&#123;</span><br><span class="line">        <span class="keyword">fn</span> <span class="title function_">send</span>(&amp;<span class="keyword">self</span>,message:&amp;<span class="type">str</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">len</span> = <span class="keyword">self</span>.send_messages.<span class="title function_ invoke__">borrow</span>().<span class="title function_ invoke__">len</span>();</span><br><span class="line">            <span class="keyword">self</span>.send_messages.<span class="title function_ invoke__">borrow_mut</span>().<span class="title function_ invoke__">push</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(message));</span><br><span class="line">            <span class="comment">// borrow_mut():  获得内部值得可变引用！</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#[test]</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">it_sends_an_over_75_persent_warning_message</span>()&#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">mock_messenger</span> = MockMessenger::<span class="title function_ invoke__">new</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">limit_tracker</span> = LimitTracker::<span class="title function_ invoke__">new</span>(&amp;mock_messenger,<span class="number">100</span>);</span><br><span class="line">        limit_tracker.<span class="title function_ invoke__">set_value</span>(<span class="number">80</span>);</span><br><span class="line">        <span class="comment">// borrow(): 获得内部值得不可变引用！</span></span><br><span class="line">        <span class="built_in">assert_eq!</span>(mock_messenger.send_messages.<span class="title function_ invoke__">borrow</span>().<span class="title function_ invoke__">len</span>(),<span class="number">1</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>borrow()</code>：返回内部值得不可变引用“智能指针<code>Ref&lt;T&gt;</code>”,实现了<code>Deref</code>;</li>
+<li><code>borrow_mut()</code>：返回内部值得可变引用“智能指针<code>RefMut&lt;T&gt;</code>”,实现了<code>Deref</code>;</li>
+</ul>
+<h4 id="4-4-RefCell-在运行时记录借用信息"><a href="#4-4-RefCell-在运行时记录借用信息" class="headerlink" title="4.4 RefCell 在运行时记录借用信息"></a>4.4 RefCell<T> 在运行时记录借用信息</h4><ul>
+<li><p>RefCell<T>会记录当前存在多少个活跃的Ref<T>和RefMut<T>智能指针：</p>
+<ul>
+<li>每次调用<code>borrow()</code>:不可变借用+1;</li>
+<li>任何一个Ref<T>的值离开作用域被释放时：不可变借用数-1;</li>
+<li>每次调用<code>borrow_mut()</code>：可变借用+1；</li>
+<li>任何一个RefMut<T>的值离开作用域被释放时：可变借用数-1;</li>
+</ul>
+</li>
+<li><p>以此技术来维护借用规则检查：</p>
+<ul>
+<li>任何一个给定时间里，只允许拥有多个不可变借用或一个可变借用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-5-拥有多重所有权的可变数据案例：Rc-lt-T-gt-RefCell-lt-T-gt"><a href="#4-5-拥有多重所有权的可变数据案例：Rc-lt-T-gt-RefCell-lt-T-gt" class="headerlink" title="4.5 拥有多重所有权的可变数据案例：Rc&lt;T&gt;+RefCell&lt;T&gt;"></a>4.5 拥有多重所有权的可变数据案例：<code>Rc&lt;T&gt;</code>+<code>RefCell&lt;T&gt;</code></h4><p><code>RefCell&lt;T&gt;</code> 的一个常见用法是与 <code>Rc&lt;T&gt;</code> 结合。回忆一下 <code>Rc&lt;T&gt;</code> 允许对相同数据有多个所有者，不过只能提供数据的不可变访问。如果有一个储存了 <code>RefCell&lt;T&gt;</code> 的 <code>Rc&lt;T&gt;</code> 的话，就可以得到有多个所有者 <strong>并且</strong> 可以修改的值了！</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::rc::Rc;</span><br><span class="line"><span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[derive(Debug)]</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">List</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">Cons</span>(Rc&lt;RefCell&lt;<span class="type">i32</span>&gt;&gt;,Rc&lt;List&gt;),</span><br><span class="line">    Nil,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> crate::List::&#123;Cons,Nil&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">value</span> = Rc::<span class="title function_ invoke__">new</span>(RefCell::<span class="title function_ invoke__">new</span>(<span class="number">5</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = Rc::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(Rc::<span class="title function_ invoke__">clone</span>(&amp;value),Rc::<span class="title function_ invoke__">new</span>(Nil)));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = <span class="title function_ invoke__">Cons</span>(Rc::<span class="title function_ invoke__">new</span>(RefCell::<span class="title function_ invoke__">new</span>(<span class="number">6</span>)),Rc::<span class="title function_ invoke__">clone</span>(&amp;a));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">c</span> = <span class="title function_ invoke__">Cons</span>(Rc::<span class="title function_ invoke__">new</span>(RefCell::<span class="title function_ invoke__">new</span>(<span class="number">10</span>)),Rc::<span class="title function_ invoke__">clone</span>(&amp;a)); </span><br><span class="line"></span><br><span class="line">    *value.<span class="title function_ invoke__">borrow_mut</span>()+=<span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;a after = &#123;:?&#125;&quot;</span>,a);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;b after = &#123;:?&#125;&quot;</span>,b);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;b after = &#123;:?&#125;&quot;</span>,c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rust/" rel="tag"># Rust</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/29/220820-4-Rust%E5%AD%A6%E4%B9%A0-8%E8%BF%AD%E4%BB%A3%E5%99%A8/" rel="prev" title="Rust学习_8.迭代器">
+                  <i class="fa fa-chevron-left"></i> Rust学习_8.迭代器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/24/220820-5-ES6%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="next" title="ES6模块化">
+                  ES6模块化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="WMS即Web Map Service,根据地理信息动态生成具有空间参考数据的地图。OGC的WMS标准将“地图”定义为将地理信息描述为适合在计算机屏幕上显示的数字图像文件。地图不是数据本身。WMS制作的地图通常以图形格式呈现，例如PNG、GIF或JPEG，或者偶尔以可缩放矢量图形(SVG)或网络计算机图形元文件(WebCGM)格式呈现为基于矢量的图形元素。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WMS详解">
+<meta property="og:url" content="https://suilandcoder.github.io/2019/06/21/190621-2-WMS%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="WMS即Web Map Service,根据地理信息动态生成具有空间参考数据的地图。OGC的WMS标准将“地图”定义为将地理信息描述为适合在计算机屏幕上显示的数字图像文件。地图不是数据本身。WMS制作的地图通常以图形格式呈现，例如PNG、GIF或JPEG，或者偶尔以可缩放矢量图形(SVG)或网络计算机图形元文件(WebCGM)格式呈现为基于矢量的图形元素。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g4932zezkbj20mw057wf1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g4934t3v8rj20xc1s6juh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g493pcse2zj20n10ekjto.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g493s6v5ecj20n509wgn3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g494blfounj20nd0ltq5k.jpg">
+<meta property="article:published_time" content="2019-06-21T08:00:31.000Z">
+<meta property="article:modified_time" content="2022-08-20T05:16:24.940Z">
+<meta property="article:author" content="SongJie">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/5cf483fdgy1g4932zezkbj20mw057wf1.jpg">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2019/06/21/190621-2-WMS%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2019/06/21/190621-2-WMS%E8%AF%A6%E8%A7%A3/","path":"2019/06/21/190621-2-WMS详解/","title":"WMS详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WMS详解 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="nav-text">1. 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-WMS%E8%AF%B7%E6%B1%82%E8%A7%84%E8%8C%83%E8%AF%A6%E8%A7%A3"><span class="nav-text">2. WMS请求规范详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-GetCapabilities%EF%BC%88%E8%BF%94%E5%9B%9E%E6%9C%8D%E5%8A%A1%E7%BA%A7%E5%85%83%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-text">2.1 GetCapabilities（返回服务级元数据）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E8%AF%B7%E6%B1%82URL"><span class="nav-text">2.1.1 请求URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">2.1.2 请求参数列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-%E5%93%8D%E5%BA%94"><span class="nav-text">2.1.3 响应</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-GetMap%EF%BC%88%E8%8E%B7%E5%8F%96%E5%BD%B1%E5%83%8F%EF%BC%89"><span class="nav-text">2.2 GetMap（获取影像）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E8%AF%B7%E6%B1%82URL"><span class="nav-text">2.2.1 请求URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">2.2.2 请求参数列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-GetFeatureInfo-optional"><span class="nav-text">2.3 GetFeatureInfo(optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E8%AF%B7%E6%B1%82URL"><span class="nav-text">2.3.1 请求URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">2.3.2 请求参数列表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-UML-%E6%A8%A1%E5%9E%8B"><span class="nav-text">3. UML 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">4. 参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2019/06/21/190621-2-WMS%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WMS详解 | Zero">
+      <meta itemprop="description" content="WMS即Web Map Service,根据地理信息动态生成具有空间参考数据的地图。OGC的WMS标准将“地图”定义为将地理信息描述为适合在计算机屏幕上显示的数字图像文件。地图不是数据本身。WMS制作的地图通常以图形格式呈现，例如PNG、GIF或JPEG，或者偶尔以可缩放矢量图形(SVG)或网络计算机图形元文件(WebCGM)格式呈现为基于矢量的图形元素。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WMS详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-21 16:00:31" itemprop="dateCreated datePublished" datetime="2019-06-21T16:00:31+08:00">2019-06-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 13:16:24" itemprop="dateModified" datetime="2022-08-20T13:16:24+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86/" itemprop="url" rel="index"><span itemprop="name">数据标准</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">WMS即Web Map Service,根据地理信息动态生成具有空间参考数据的地图。OGC的WMS标准将“地图”定义为将地理信息描述为适合在计算机屏幕上显示的数字图像文件。地图不是数据本身。WMS制作的地图通常以图形格式呈现，例如PNG、GIF或JPEG，或者偶尔以可缩放矢量图形(SVG)或网络计算机图形元文件(WebCGM)格式呈现为基于矢量的图形元素。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p><code>WMS</code>即<code>Web Map Service</code>,根据地理信息动态生成具有空间参考数据的地图。<br>OGC的<code>WMS标准</code>将“地图”定义为将地理信息描述为适合在计算机屏幕上显示的数字图像文件。地图不是数据本身。WMS制作的地图通常以图形格式呈现，例如PNG、GIF或JPEG，或者偶尔以可缩放矢量图形(SVG)或网络计算机图形元文件(WebCGM)格式呈现为基于矢量的图形元素。</p>
+<p>这个规范定义了三种操作：</p>
+<ul>
+<li>获取服务级别元数据：<code>GetCapabitities</code> <em>它是对服务信息内容和要求参数的一种描述</em></li>
+<li>获取地图影像：<code>GetMap</code> <em>地理空间参考和大小参数是明确定义了的</em></li>
+<li>获取要素信息：<code>GetFeatureInfo</code> <em>获取显示在地图上的某些特殊要素信息</em></li>
+</ul>
+<h2 id="2-WMS请求规范详解"><a href="#2-WMS请求规范详解" class="headerlink" title="2. WMS请求规范详解"></a>2. WMS请求规范详解</h2><h3 id="2-1-GetCapabilities（返回服务级元数据）"><a href="#2-1-GetCapabilities（返回服务级元数据）" class="headerlink" title="2.1 GetCapabilities（返回服务级元数据）"></a>2.1 GetCapabilities（返回服务级元数据）</h3><h4 id="2-1-1-请求URL"><a href="#2-1-1-请求URL" class="headerlink" title="2.1.1 请求URL"></a>2.1.1 请求URL</h4><p><a target="_blank" rel="noopener" href="http://localhost:8680/geoserver/wms?service=wms&amp;version=1.1.1&amp;request=GetCapabilities">http://localhost:8680/geoserver/wms?service=wms&amp;version=1.1.1&amp;request=GetCapabilities</a></p>
+<h4 id="2-1-2-请求参数列表"><a href="#2-1-2-请求参数列表" class="headerlink" title="2.1.2 请求参数列表"></a>2.1.2 请求参数列表</h4><p><img src="http://ww1.sinaimg.cn/large/5cf483fdgy1g4932zezkbj20mw057wf1.jpg" alt="图片 2-1 getCapabilities request"></p>
+<h4 id="2-1-3-响应"><a href="#2-1-3-响应" class="headerlink" title="2.1.3 响应"></a>2.1.3 响应</h4><p>返回中规定了WMS所支持的服务，以及每个服务返回的数据格式（通过Format指定，Format为MIME类型）；</p>
+<p>已将XML格式的返回数据组织成以下形式：<br><img src="http://ww1.sinaimg.cn/large/5cf483fdgy1g4934t3v8rj20xc1s6juh.jpg" alt="图片 2-2 getCapabilities reponse"></p>
+<h3 id="2-2-GetMap（获取影像）"><a href="#2-2-GetMap（获取影像）" class="headerlink" title="2.2 GetMap（获取影像）"></a>2.2 GetMap（获取影像）</h3><h4 id="2-2-1-请求URL"><a href="#2-2-1-请求URL" class="headerlink" title="2.2.1 请求URL"></a>2.2.1 请求URL</h4><p><a target="_blank" rel="noopener" href="http://localhost:8680/geoserver/urbanlayer/wms?LAYERS=urbanlayer:DIJI&amp;STYLES=&amp;FORMAT=image/png&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;SRS=EPSG:3857&amp;BBOX=10008053.503544,5274522.8578226,10039584.01305,5292493.614536&amp;WIDTH=579&amp;HEIGHT=330">http://localhost:8680/geoserver/urbanlayer/wms?LAYERS=urbanlayer%3ADIJI&amp;STYLES=&amp;FORMAT=image%2Fpng&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;SRS=EPSG%3A3857&amp;BBOX=10008053.503544,5274522.8578226,10039584.01305,5292493.614536&amp;WIDTH=579&amp;HEIGHT=330</a></p>
+<h4 id="2-2-2-请求参数列表"><a href="#2-2-2-请求参数列表" class="headerlink" title="2.2.2 请求参数列表"></a>2.2.2 请求参数列表</h4><p><img src="http://ww1.sinaimg.cn/large/5cf483fdgy1g493pcse2zj20n10ekjto.jpg" alt="图片 2-3 getMap request"></p>
+<h3 id="2-3-GetFeatureInfo-optional"><a href="#2-3-GetFeatureInfo-optional" class="headerlink" title="2.3 GetFeatureInfo(optional)"></a>2.3 GetFeatureInfo(optional)</h3><h4 id="2-3-1-请求URL"><a href="#2-3-1-请求URL" class="headerlink" title="2.3.1 请求URL"></a>2.3.1 请求URL</h4><p><a target="_blank" rel="noopener" href="http://localhost:8680/geoserver/urbanlayer/wms?REQUEST=GetFeatureInfo&amp;EXCEPTIONS=application/vnd.ogc.se_xml&amp;BBOX=10008053.503544,5274522.857823,10039584.01305,5292493.614536&amp;SERVICE=WMS&amp;INFO_FORMAT=text/plain&amp;QUERY_LAYERS=urbanlayer:DIJI&amp;FEATURE_COUNT=50&amp;Layers=urbanlayer:DIJI&amp;WIDTH=579&amp;HEIGHT=330&amp;format=image/png&amp;styles=&amp;srs=EPSG:3857&amp;version=1.1.1&amp;x=315&amp;y=147">http://localhost:8680/geoserver/urbanlayer/wms?REQUEST=GetFeatureInfo&amp;EXCEPTIONS=application%2Fvnd.ogc.se_xml&amp;BBOX=10008053.503544%2C5274522.857823%2C10039584.01305%2C5292493.614536&amp;SERVICE=WMS&amp;INFO_FORMAT=text/plain&amp;QUERY_LAYERS=urbanlayer%3ADIJI&amp;FEATURE_COUNT=50&amp;Layers=urbanlayer%3ADIJI&amp;WIDTH=579&amp;HEIGHT=330&amp;format=image%2Fpng&amp;styles=&amp;srs=EPSG%3A3857&amp;version=1.1.1&amp;x=315&amp;y=147</a></p>
+<h4 id="2-3-2-请求参数列表"><a href="#2-3-2-请求参数列表" class="headerlink" title="2.3.2 请求参数列表"></a>2.3.2 请求参数列表</h4><p><img src="http://ww1.sinaimg.cn/large/5cf483fdgy1g493s6v5ecj20n509wgn3.jpg" alt="图片 2-4 getFeatureInfo request"></p>
+<h2 id="3-UML-模型"><a href="#3-UML-模型" class="headerlink" title="3. UML 模型"></a>3. UML 模型</h2><p><img src="http://ww1.sinaimg.cn/large/5cf483fdgy1g494blfounj20nd0ltq5k.jpg" alt="图片 3-1 WMS Datatype"></p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><ul>
+<li>OpenGIS® Web Map Server Implementation Specification</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/naaoveGIS/p/5508882.html">博客园-Naa</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/21/190621-1-XML-Schema%E8%AF%A6%E8%A7%A3/" rel="prev" title="XML Schema详解">
+                  <i class="fa fa-chevron-left"></i> XML Schema详解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/22/190622-1-WFS%E8%AF%A6%E8%A7%A3/" rel="next" title="WFS详解">
+                  WFS详解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

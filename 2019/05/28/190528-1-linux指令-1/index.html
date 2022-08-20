@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="介绍一些linux下的常用指令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux指令(1)">
+<meta property="og:url" content="https://suilandcoder.github.io/2019/05/28/190528-1-linux%E6%8C%87%E4%BB%A4-1/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="介绍一些linux下的常用指令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/5cf483fdgy1g3hetl3rb2j20in0it0tq.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/5cf483fdgy1g3hezqrobcj218o0o4q6j.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/5cf483fdgy1g3hf0rbjf9j218o0o4whz.jpg">
+<meta property="article:published_time" content="2019-05-28T14:19:33.000Z">
+<meta property="article:modified_time" content="2022-08-20T05:16:24.560Z">
+<meta property="article:author" content="SongJie">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/large/5cf483fdgy1g3hetl3rb2j20in0it0tq.jpg">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2019/05/28/190528-1-linux%E6%8C%87%E4%BB%A4-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2019/05/28/190528-1-linux%E6%8C%87%E4%BB%A4-1/","path":"2019/05/28/190528-1-linux指令-1/","title":"linux指令(1)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>linux指令(1) | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-linux-%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B%E5%91%BD%E4%BB%A4"><span class="nav-text">1. linux 压缩和解压命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tar"><span class="nav-text">.tar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gz"><span class="nav-text">.gz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar-gz-%E5%92%8C-tgz"><span class="nav-text">.tar.gz 和 .tgz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bz2"><span class="nav-text">.bz2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Z"><span class="nav-text">.Z</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar-Z"><span class="nav-text">.tar.Z</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zip"><span class="nav-text">.zip</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#zip%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">zip命令参数列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unzip%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">unzip命令参数列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rar"><span class="nav-text">.rar</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-xshell%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E5%88%B0linux%E6%88%96%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E5%88%B0%E6%9C%AC%E5%9C%B0windows"><span class="nav-text">2. xshell上传文件到linux或下载文件到本地windows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A4%8D%E5%88%B6%E5%92%8C%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-text">3. 复制和移动文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%91%BD%E4%BB%A4cp"><span class="nav-text">3.1 文件复制命令cp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%96%87%E4%BB%B6%E7%A7%BB%E5%8A%A8%E5%91%BD%E4%BB%A4mv"><span class="nav-text">3.2 文件移动命令mv</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.2.1 命令格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%91%BD%E4%BB%A4%E5%8A%9F%E8%83%BD"><span class="nav-text">3.2.2 命令功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="nav-text">3.2.3 命令参数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-%E5%91%BD%E4%BB%A4%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="nav-text">3.2.4 命令实例：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%94%B9%E5%90%8D"><span class="nav-text">1. 文件改名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-text">2. 移动文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%B0%86%E6%96%87%E4%BB%B6log1-txt-log2-txt-log3-txt%E7%A7%BB%E5%8A%A8%E5%88%B0%E7%9B%AE%E5%BD%95test3%E4%B8%AD"><span class="nav-text">3. 将文件log1.txt,log2.txt,log3.txt移动到目录test3中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E5%B0%86%E6%96%87%E4%BB%B6file1%E6%94%B9%E5%90%8D%E4%B8%BAfile2%EF%BC%8C%E5%A6%82%E6%9E%9Cfile2%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%9C%A8%EF%BC%8C%E5%88%99%E8%AF%A2%E9%97%AE%E6%98%AF%E5%90%A6%E8%A6%86%E7%9B%96"><span class="nav-text">4. 将文件file1改名为file2，如果file2已经存在，则询问是否覆盖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E5%B0%86%E6%96%87%E4%BB%B6file1%E6%94%B9%E5%90%8D%E4%B8%BAfile2%EF%BC%8C%E5%8D%B3%E4%BD%BFfile2%E5%AD%98%E5%9C%A8%EF%BC%8C%E4%B9%9F%E6%98%AF%E7%9B%B4%E6%8E%A5%E8%A6%86%E7%9B%96%E6%8E%89"><span class="nav-text">5. 将文件file1改名为file2，即使file2存在，也是直接覆盖掉</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E7%9B%AE%E5%BD%95%E7%A7%BB%E5%8A%A8"><span class="nav-text">6. 目录移动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E7%A7%BB%E5%8A%A8%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%88%B0%E4%B8%8A%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95"><span class="nav-text">7. 移动当前文件夹下的所有文件到上一级目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E6%8A%8A%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E7%9A%84%E4%B8%80%E4%B8%AA%E5%AD%90%E7%9B%AE%E5%BD%95%E9%87%8C%E7%9A%84%E6%96%87%E4%BB%B6%E7%A7%BB%E5%8A%A8%E5%88%B0%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%AD%90%E7%9B%AE%E5%BD%95%E9%87%8C"><span class="nav-text">8. 把当前目录的一个子目录里的文件移动到另一个子目录里</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-%E6%96%87%E4%BB%B6%E8%A2%AB%E8%A6%86%E7%9B%96%E5%89%8D%E5%81%9A%E7%AE%80%E5%8D%95%E5%A4%87%E4%BB%BD%EF%BC%8C%E5%89%8D%E9%9D%A2%E5%8A%A0%E5%8F%82%E6%95%B0-b"><span class="nav-text">9. 文件被覆盖前做简单备份，前面加参数-b</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4%E5%91%BD%E4%BB%A4rm"><span class="nav-text">3.3 文件删除命令rm</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2019/05/28/190528-1-linux%E6%8C%87%E4%BB%A4-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="linux指令(1) | Zero">
+      <meta itemprop="description" content="介绍一些linux下的常用指令。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux指令(1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-28 22:19:33" itemprop="dateCreated datePublished" datetime="2019-05-28T22:19:33+08:00">2019-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 13:16:24" itemprop="dateModified" datetime="2022-08-20T13:16:24+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">介绍一些linux下的常用指令。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-linux-压缩和解压命令"><a href="#1-linux-压缩和解压命令" class="headerlink" title="1. linux 压缩和解压命令"></a>1. linux 压缩和解压命令</h2><h3 id="tar"><a href="#tar" class="headerlink" title=".tar"></a>.tar</h3><ul>
+<li>解包：tar zxvf FileName.tar 　　</li>
+<li>打包：tar czvf FileName.tar DirName</li>
+</ul>
+<h3 id="gz"><a href="#gz" class="headerlink" title=".gz"></a>.gz</h3><ul>
+<li>解压1：gunzip FileName.gz 　　</li>
+<li>解压2：gzip -d FileName.gz 　　</li>
+<li>压缩：gzip FileName</li>
+</ul>
+<h3 id="tar-gz-和-tgz"><a href="#tar-gz-和-tgz" class="headerlink" title=".tar.gz 和 .tgz"></a>.tar.gz 和 .tgz</h3><ul>
+<li>解压：tar zxvf FileName.tar.gz 　　</li>
+<li>压缩：tar zcvf FileName.tar.gz DirName</li>
+</ul>
+<h3 id="bz2"><a href="#bz2" class="headerlink" title=".bz2"></a>.bz2</h3><ul>
+<li>解压1：bzip2 -d FileName.bz2</li>
+<li>解压2：bunzip2 FileName.bz2</li>
+<li>压缩： bzip2 -z FileName</li>
+</ul>
+<h3 id="Z"><a href="#Z" class="headerlink" title=".Z"></a>.Z</h3><ul>
+<li>解压：uncompress FileName.Z </li>
+<li>压缩：compress FileName</li>
+</ul>
+<h3 id="tar-Z"><a href="#tar-Z" class="headerlink" title=".tar.Z"></a>.tar.Z</h3><ul>
+<li>解压：tar Zxvf FileName.tar.Z</li>
+<li>压缩：tar Zcvf FileName.tar.Z DirName</li>
+</ul>
+<h3 id="zip"><a href="#zip" class="headerlink" title=".zip"></a>.zip</h3><ul>
+<li>解压：unzip FileName.zip 　　</li>
+<li>压缩：zip FileName.zip DirName</li>
+</ul>
+<h4 id="zip命令参数列表"><a href="#zip命令参数列表" class="headerlink" title="zip命令参数列表"></a>zip命令参数列表</h4><ul>
+<li><p>-a 将文件转成ASCII模式</p>
+</li>
+<li><p>-F 尝试修复损坏的压缩文件</p>
+</li>
+<li><p>-h 显示帮助界面</p>
+</li>
+<li><p>-m 将文件压缩之后，删除源文件</p>
+</li>
+<li><p>-n 特定字符串 不压缩具有特定字尾字符串的文件</p>
+</li>
+<li><p>-o 将压缩文件内的所有文件的最新变动时间设为压缩时候的时间</p>
+</li>
+<li><p>-q 安静模式，在压缩的时候不显示指令的执行过程</p>
+</li>
+<li><p>-r 将指定的目录下的所有子目录以及文件一起处理</p>
+</li>
+<li><p>-S 包含系统文件和隐含文件（S是大写）</p>
+</li>
+<li><p>-t 日期 把压缩文件的最后修改日期设为指定的日期，日期格式为mmddyyyy</p>
+</li>
+</ul>
+<h4 id="unzip命令参数列表"><a href="#unzip命令参数列表" class="headerlink" title="unzip命令参数列表"></a>unzip命令参数列表</h4><ul>
+<li>-c 将解压缩的结果显示到屏幕上，并对字符做适当的转换。</li>
+<li>-f 更新现有的文件。</li>
+<li>-l 显示压缩文件内所包含的文件。</li>
+<li>-p 与-c参数类似，会将解压缩的结果显示到屏幕上，但不会执行任何的转换。</li>
+<li>-t 检查压缩文件是否正确。</li>
+<li>-u 与-f参数类似，但是除了更新现有的文件外，也会将压缩文件中的其他文件解压缩到目录中。</li>
+<li>-v 执行是时显示详细的信息。</li>
+<li>-z 仅显示压缩文件的备注文字。</li>
+<li>-a 对文本文件进行必要的字符转换。</li>
+<li>-b 不要对文本文件进行字符转换。</li>
+<li>-C 压缩文件中的文件名称区分大小写。</li>
+<li>-j 不处理压缩文件中原有的目录路径。</li>
+<li>-L 将压缩文件中的全部文件名改为小写。</li>
+<li>-M 将输出结果送到more程序处理。</li>
+<li>-n 解压缩时不要覆盖原有的文件。</li>
+<li>-o 不必先询问用户，unzip执行后覆盖原有文件。</li>
+<li>-P&lt;密码&gt; 使用zip的密码选项。</li>
+<li>-q 执行时不显示任何信息。</li>
+<li>-s 将文件名中的空白字符转换为底线字符。</li>
+<li>-V 保留VMS的文件版本信息。</li>
+<li>-X 解压缩时同时回存文件原来的UID&#x2F;GID。</li>
+<li>[.zip文件] 指定.zip压缩文件。</li>
+<li>[文件] 指定要处理.zip压缩文件中的哪些文件。</li>
+<li>-d&lt;目录&gt; 指定文件解压缩后所要存储的目录。</li>
+<li>-x&lt;文件&gt; 指定不要处理.zip压缩文件中的哪些文件。</li>
+<li>-Z unzip -Z等于执行zipinfo指令</li>
+</ul>
+<h3 id="rar"><a href="#rar" class="headerlink" title=".rar"></a>.rar</h3><ul>
+<li>解压：rar a FileName.rar 　　</li>
+<li>压缩：rar e FileName.rar</li>
+</ul>
+<p>rar请到：<a target="_blank" rel="noopener" href="http://www.rarsoft.com/download.htm">http://www.rarsoft.com/download.htm</a> 下载！</p>
+<p>解压后请将rar_static拷贝到&#x2F;usr&#x2F;bin目录（其他由$PATH环境变量指定的目录也可以）： 　　</p>
+<blockquote>
+<p>[root@www2 tmp]# cp rar_static &#x2F;usr&#x2F;bin&#x2F;rar</p>
+</blockquote>
+<p><strong>参考：<a target="_blank" rel="noopener" href="http://www.blogjava.net/jiangjf/archive/2007/07/29/133122.html">BlogJava–重复容易，改变很难</a></strong></p>
+<h2 id="2-xshell上传文件到linux或下载文件到本地windows"><a href="#2-xshell上传文件到linux或下载文件到本地windows" class="headerlink" title="2. xshell上传文件到linux或下载文件到本地windows"></a>2. xshell上传文件到linux或下载文件到本地windows</h2><p>首先linux上需要安装<code>lrzsz</code>工具包：</p>
+<blockquote>
+<p>sudo apt-get install lrzsz</p>
+</blockquote>
+<p><code>rz(receive)</code>，<code>sz(send)</code>是Linux&#x2F;Unix同Windows进行<code>ZModem</code>文件传输的命令行工具，所以要在Xshell连接属性中的设置上传协议为<code>Zmodem</code>和接受的文件路径等，如下图所示：<br><img src="http://wx3.sinaimg.cn/large/5cf483fdgy1g3hetl3rb2j20in0it0tq.jpg" alt="图 2-1 xshell文件传输配置"></p>
+<p>windows端需要支持ZModem的telnet&#x2F;ssh客户端(xshell支持,好像putty不支持)，SecureCRT就可以用SecureCRT登陆到Unix&#x2F;Linux主机（telnet或ssh均可）。</p>
+<p>运行命令<code>rz</code>，即是接收文件（上传到Linux上），xshell就会弹出文件选择对话框，选好文件之后关闭对话框，文件就会上传到linux里的当前目录。也可以直接把要上传的文件拖到xshell上完成上传。如下图所示：<br><img src="http://wx1.sinaimg.cn/large/5cf483fdgy1g3hezqrobcj218o0o4q6j.jpg" alt="图 2-2 rz上传指令"></p>
+<p>运行命令<code>sz filename</code> 就是发文件到windows上（保存的目录是可以配置） 比ftp命令方便多了，而且服务器不用再开FTP服务了。如下图所示：<br><img src="http://wx2.sinaimg.cn/mw690/5cf483fdgy1g3hf0rbjf9j218o0o4whz.jpg" alt="图 2-3 sz下载指令"></p>
+<p><strong>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/machanghai/p/5976054.html">博客园–502studio</a></strong></p>
+<h2 id="3-复制和移动文件"><a href="#3-复制和移动文件" class="headerlink" title="3. 复制和移动文件"></a>3. 复制和移动文件</h2><p>linux下文件的复制、移动与删除命令为：cp，mv，rm</p>
+<h3 id="3-1-文件复制命令cp"><a href="#3-1-文件复制命令cp" class="headerlink" title="3.1 文件复制命令cp"></a>3.1 文件复制命令cp</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">命令格式：cp [-adfilprsu] 源文件(source) 目标文件(destination)</span><br><span class="line">cp [option] source1 source2 source3 ... directory</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li>-a:是指archive的意思，也说是指复制所有的目录</li>
+<li>-d:若源文件为连接文件(link file)，则复制连接文件属性而非文件本身</li>
+<li>-f:强制(force)，若有重复或其它疑问时，不会询问用户，而强制复制</li>
+<li>-i:若目标文件(destination)已存在，在覆盖时会先询问是否真的操作</li>
+<li>-l:建立硬连接(hard link)的连接文件，而非复制文件本身</li>
+<li>-p:与文件的属性一起复制，而非使用默认属性</li>
+<li>-r:递归复制，用于目录的复制操作</li>
+<li>-s:复制成符号连接文件(symbolic link)，即“快捷方式”文件</li>
+<li>-u:若目标文件比源文件旧，更新目标文件</li>
+</ul>
+<p>如将&#x2F;test1目录下的file1复制到&#x2F;test3目录，并将文件名改为file2,可输入以下命令： cp &#x2F;test1&#x2F;file1 &#x2F;test3&#x2F;file2  </p>
+<h3 id="3-2-文件移动命令mv"><a href="#3-2-文件移动命令mv" class="headerlink" title="3.2 文件移动命令mv"></a>3.2 文件移动命令mv</h3><p>mv命令是move的缩写，可以用来移动文件或者将文件改名（move (rename) files），是Linux系统下常用的命令，经常用来备份文件或者目录。</p>
+<h4 id="3-2-1-命令格式"><a href="#3-2-1-命令格式" class="headerlink" title="3.2.1 命令格式"></a>3.2.1 命令格式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv [-fiv] source destination</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-2-命令功能"><a href="#3-2-2-命令功能" class="headerlink" title="3.2.2 命令功能"></a>3.2.2 命令功能</h4><p>视mv命令中第二个参数类型的不同（是目标文件还是目标目录），<strong>mv命令将文件重命名或将其移至一个新的目录中</strong>。当第二个参数类型是文件时，mv命令完成文件重命名，此时，源文件只能有一个（也可以是源目录名），它将所给的源文件或目录重命名为给定的目标文件名。当第二个参数是已存在的目录名称时，源文件或目录参数可以有多个，mv命令将各参数指定的源文件均移至目标目录中。在跨文件系统移动文件时，mv先拷贝，再将原有文件删除，而链至该文件的链接也将丢失。</p>
+<h4 id="3-2-3-命令参数："><a href="#3-2-3-命令参数：" class="headerlink" title="3.2.3 命令参数："></a>3.2.3 命令参数：</h4><ul>
+<li>-b:若需覆盖文件，则覆盖前先备份</li>
+<li>-f:force，强制直接移动而不询问 </li>
+<li>-i:若目标文件(destination)已经存在，就会询问是否覆盖 </li>
+<li>-u:若目标文件已经存在，且源文件比较新，才会更新</li>
+<li>-t:指定mv的目标目录，该选项适用于移动多个源文件到一个目录的情况，此时目标目录在前，源文件在后。</li>
+</ul>
+<h4 id="3-2-4-命令实例："><a href="#3-2-4-命令实例：" class="headerlink" title="3.2.4 命令实例："></a>3.2.4 命令实例：</h4><h5 id="1-文件改名"><a href="#1-文件改名" class="headerlink" title="1. 文件改名"></a>1. 文件改名</h5><p>将文件test.log重命名为test1.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv test.log test1.txt</span><br></pre></td></tr></table></figure>
+<h5 id="2-移动文件"><a href="#2-移动文件" class="headerlink" title="2. 移动文件"></a>2. 移动文件</h5><p>将test1.txt文件移到目录test3中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv test1.txt test3</span><br></pre></td></tr></table></figure>
+<h5 id="3-将文件log1-txt-log2-txt-log3-txt移动到目录test3中"><a href="#3-将文件log1-txt-log2-txt-log3-txt移动到目录test3中" class="headerlink" title="3. 将文件log1.txt,log2.txt,log3.txt移动到目录test3中"></a>3. 将文件log1.txt,log2.txt,log3.txt移动到目录test3中</h5><p>mv log1.txt log2.txt log3.txt test3 命令将log1.txt ，log2.txt， log3.txt 三个文件移到 test3目录中去</p>
+<p>mv -t &#x2F;opt&#x2F;soft&#x2F;test&#x2F;test4&#x2F; log1.txt log2.txt log3.txt 命令又将三个文件移动到test4目录中去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv log1.txt log2.txt log3.txt test3</span><br><span class="line"></span><br><span class="line">mv -t /opt/soft/test/test4/ log1.txt log2.txt 	log3.txt </span><br></pre></td></tr></table></figure>
+<h5 id="4-将文件file1改名为file2，如果file2已经存在，则询问是否覆盖"><a href="#4-将文件file1改名为file2，如果file2已经存在，则询问是否覆盖" class="headerlink" title="4. 将文件file1改名为file2，如果file2已经存在，则询问是否覆盖"></a>4. 将文件file1改名为file2，如果file2已经存在，则询问是否覆盖</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv -i log1.txt log2.txt</span><br></pre></td></tr></table></figure>
+<h5 id="5-将文件file1改名为file2，即使file2存在，也是直接覆盖掉"><a href="#5-将文件file1改名为file2，即使file2存在，也是直接覆盖掉" class="headerlink" title="5. 将文件file1改名为file2，即使file2存在，也是直接覆盖掉"></a>5. 将文件file1改名为file2，即使file2存在，也是直接覆盖掉</h5><p>log3.txt的内容直接覆盖了log2.txt内容，-f 这是个危险的选项，使用的时候一定要保持头脑清晰，一般情况下最好不用加上它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv -f log3.txt log2.txt</span><br></pre></td></tr></table></figure>
+<h5 id="6-目录移动"><a href="#6-目录移动" class="headerlink" title="6. 目录移动"></a>6. 目录移动</h5><p>如果目录dir2不存在，将目录dir1改名为dir2；否则，将dir1移动到dir2中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv dir1 dir2 </span><br></pre></td></tr></table></figure>
+
+<h5 id="7-移动当前文件夹下的所有文件到上一级目录"><a href="#7-移动当前文件夹下的所有文件到上一级目录" class="headerlink" title="7. 移动当前文件夹下的所有文件到上一级目录"></a>7. 移动当前文件夹下的所有文件到上一级目录</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv * ../</span><br></pre></td></tr></table></figure>
+
+<h5 id="8-把当前目录的一个子目录里的文件移动到另一个子目录里"><a href="#8-把当前目录的一个子目录里的文件移动到另一个子目录里" class="headerlink" title="8. 把当前目录的一个子目录里的文件移动到另一个子目录里"></a>8. 把当前目录的一个子目录里的文件移动到另一个子目录里</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv test3/*.txt test5</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-文件被覆盖前做简单备份，前面加参数-b"><a href="#9-文件被覆盖前做简单备份，前面加参数-b" class="headerlink" title="9. 文件被覆盖前做简单备份，前面加参数-b"></a>9. 文件被覆盖前做简单备份，前面加参数-b</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv log1.txt -b log2.txt</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-3-文件删除命令rm"><a href="#3-3-文件删除命令rm" class="headerlink" title="3.3 文件删除命令rm"></a>3.3 文件删除命令rm</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令格式：rm [fir] 文件或目录</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li>-f:强制删除</li>
+<li>-i:交互模式，在删除前询问用户是否操作</li>
+<li>-r:递归删除，常用在目录的删除</li>
+</ul>
+<p>如删除&#x2F;test目录下的file1文件，可以输入以下命令：<br>rm -i &#x2F;test&#x2F;file1</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/22/190415-1-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="正则表达式">
+                  <i class="fa fa-chevron-left"></i> 正则表达式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/30/190530-1-linux%E7%94%A8%E6%88%B7%E5%8F%8A%E7%94%A8%E6%88%B7%E7%BB%84/" rel="next" title="linux用户及用户组">
+                  linux用户及用户组 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
