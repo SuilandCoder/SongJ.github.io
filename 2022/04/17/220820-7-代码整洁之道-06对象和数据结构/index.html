@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="对象和数据结构的区别是啥？什么时候用对象，什么时候用数据结构？面向对象还是面向过程？隐藏实现并非只是在变量之间放上一个函数层那么简单。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码整洁之道_06对象和数据结构">
+<meta property="og:url" content="https://suilandcoder.github.io/2022/04/17/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-06%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="对象和数据结构的区别是啥？什么时候用对象，什么时候用数据结构？面向对象还是面向过程？隐藏实现并非只是在变量之间放上一个函数层那么简单。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-17T15:21:13.000Z">
+<meta property="article:modified_time" content="2022-08-20T15:23:49.943Z">
+<meta property="article:author" content="SongJie">
+<meta property="article:tag" content="Clean Code">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2022/04/17/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-06%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2022/04/17/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-06%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/","path":"2022/04/17/220820-7-代码整洁之道-06对象和数据结构/","title":"代码整洁之道_06对象和数据结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>代码整洁之道_06对象和数据结构 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">第六章 对象和数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%8A%BD%E8%B1%A1"><span class="nav-text">1. 数据抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E3%80%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AF%B9%E7%AB%8B"><span class="nav-text">2. 数据结构、对象的对立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-The-Law-of-Demeter"><span class="nav-text">3. The Law of Demeter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E7%81%AB%E8%BD%A6%E5%A4%B1%E4%BA%8B"><span class="nav-text">3.1 火车失事</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E6%B7%B7%E6%9D%82"><span class="nav-text">3.2 混杂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E9%9A%90%E8%97%8F%E7%BB%93%E6%9E%84"><span class="nav-text">3.3 隐藏结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E5%AF%B9%E8%B1%A1-DTO"><span class="nav-text">4. 数据传送对象 DTO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%B0%8F%E7%BB%93"><span class="nav-text">5. 小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2022/04/17/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-06%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="代码整洁之道_06对象和数据结构 | Zero">
+      <meta itemprop="description" content="对象和数据结构的区别是啥？什么时候用对象，什么时候用数据结构？面向对象还是面向过程？隐藏实现并非只是在变量之间放上一个函数层那么简单。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代码整洁之道_06对象和数据结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-17 23:21:13" itemprop="dateCreated datePublished" datetime="2022-04-17T23:21:13+08:00">2022-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 23:23:49" itemprop="dateModified" datetime="2022-08-20T23:23:49+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">编程杂谈</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">对象和数据结构的区别是啥？什么时候用对象，什么时候用数据结构？面向对象还是面向过程？隐藏实现并非只是在变量之间放上一个函数层那么简单。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="第六章-对象和数据结构"><a href="#第六章-对象和数据结构" class="headerlink" title="第六章 对象和数据结构"></a>第六章 对象和数据结构</h2><ul>
+<li>对象和数据结构的区别是啥？</li>
+<li>什么时候用对象，什么时候用数据结构？</li>
+<li>面向对象还是面向过程？</li>
+</ul>
+<h3 id="1-数据抽象"><a href="#1-数据抽象" class="headerlink" title="1. 数据抽象"></a>1. 数据抽象</h3><p>隐藏实现并非只是在变量之间放上一个函数层那么简单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码1：具象点</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Point</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> x;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码2： 抽象点</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Point</span>&#123;</span><br><span class="line">    <span class="type">double</span> <span class="title function_">getX</span><span class="params">()</span>;</span><br><span class="line">    <span class="type">double</span> <span class="title function_">getY</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setCartesian</span><span class="params">(<span class="type">double</span> x,<span class="type">double</span> y)</span>;</span><br><span class="line">    <span class="type">double</span> <span class="title function_">getR</span><span class="params">()</span>;</span><br><span class="line">    <span class="type">double</span> <span class="title function_">getTheta</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setPolar</span><span class="params">(<span class="type">double</span> r, <span class="type">double</span> theta)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码2的漂亮之处在于，你不知道该实现会是在矩形坐标系中还是在极坐标系中。可能两个都不是，然而，该接口还是明白无误地呈现了一种数据结构。</p>
+<p>代码1暴露了实现，并且，即便变量都是私有的，通过取值器和赋值器使用变量，实现也被暴露了。</p>
+<p><strong>注意</strong>：<strong>隐藏实现并非只是在变量之间放上一个函数层那么简单</strong>。隐藏实现关乎抽象！类并不简单地用取值器和赋值器将其变量推向外界，而是暴露抽象接口，以便用户无须了解数据的实现就能操作数据本体（essence）。</p>
+<h3 id="2-数据结构、对象的对立"><a href="#2-数据结构、对象的对立" class="headerlink" title="2. 数据结构、对象的对立"></a>2. 数据结构、对象的对立</h3><ul>
+<li>对象把数据隐藏于抽象之后，暴露数据的函数；</li>
+<li>数据结构暴露其数据，没有提供有意义的函数；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码3：过程式 形状代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123;</span><br><span class="line">     <span class="keyword">public</span> Point topLeft;</span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> side;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> &#123;</span><br><span class="line">     <span class="keyword">public</span> Point topLeft;</span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> height;</span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> width;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Circle</span> &#123;</span><br><span class="line">     <span class="keyword">public</span> Point center;</span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> radius;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Geometry</span> &#123;</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">double</span> <span class="variable">PI</span> <span class="operator">=</span> <span class="number">3.141592653589793</span>;</span><br><span class="line">    </span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">area</span><span class="params">(Object shape)</span> <span class="keyword">throws</span> NoSuchShapeException </span><br><span class="line">     &#123;</span><br><span class="line">         <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Square) &#123;</span><br><span class="line">             <span class="type">Square</span> <span class="variable">s</span> <span class="operator">=</span> (Square)shape;</span><br><span class="line">             <span class="keyword">return</span> s.side * s.side;</span><br><span class="line">    	 &#125;</span><br><span class="line">         <span class="keyword">else</span> <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Rectangle) &#123;</span><br><span class="line">             <span class="type">Rectangle</span> <span class="variable">r</span> <span class="operator">=</span> (Rectangle)shape;</span><br><span class="line">             <span class="keyword">return</span> r.height * r.width;</span><br><span class="line">         &#125;</span><br><span class="line">     	 <span class="keyword">else</span> <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Circle) &#123;</span><br><span class="line">             <span class="type">Circle</span> <span class="variable">c</span> <span class="operator">=</span> (Circle)shape;</span><br><span class="line">             <span class="keyword">return</span> PI * c.radius * c.radius;</span><br><span class="line">         &#125;</span><br><span class="line">     	<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchShapeException</span>();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上<code>代码3</code>特征：</p>
+<ul>
+<li>为<code>Geometry</code>类添加函数，不会影响形状类；</li>
+<li>若要增加形状，就得修改<code>Geometry</code>中的所有函数；</li>
+</ul>
+<p>以下<code>代码4</code>特征：</p>
+<ul>
+<li>添加新形状，不影响现有函数；</li>
+<li>添加新函数，所有形状都得做修改；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码4：多态式 形状代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Square</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">     <span class="keyword">private</span> Point topLeft;</span><br><span class="line">     <span class="keyword">private</span> <span class="type">double</span> side;</span><br><span class="line">     <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">area</span><span class="params">()</span> &#123;</span><br><span class="line">     	<span class="keyword">return</span> side*side;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Point topLeft;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> height;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> width;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">area</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> height * width;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Point center;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> radius;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">double</span> <span class="variable">PI</span> <span class="operator">=</span> <span class="number">3.141592653589793</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">area</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> PI * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结论：</p>
+<ol>
+<li>过程是代码：便于在不改动既有数据结构的前提下添加新函数；</li>
+<li>面向对象代码：便于在不改动既有函数的前提下添加新类；</li>
+</ol>
+<blockquote>
+<p>一切都是对象的说法只是一个传说——老练的程序员</p>
+</blockquote>
+<h3 id="3-The-Law-of-Demeter"><a href="#3-The-Law-of-Demeter" class="headerlink" title="3. The Law of Demeter"></a>3. The Law of Demeter</h3><ul>
+<li>模块不应了解他所操作对象的内部情形。</li>
+<li>对象不应通过存取器暴露其内部结构，因为这样更像是暴露而非隐藏其内部结构。</li>
+<li>方法不应调用由任何函数返回的对象的方法。</li>
+</ul>
+<h4 id="3-1-火车失事"><a href="#3-1-火车失事" class="headerlink" title="3.1 火车失事"></a>3.1 火车失事</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">outputDir</span> <span class="operator">=</span> ctxt.getOptions().getScratchDir().getAbsolutePath();</span><br></pre></td></tr></table></figure>
+
+<p>模块知道<code>ctxt</code>对象包含多个选项，每个选项中都有一个临时目录，每个临时目录都有一个绝对路径。对于一个函数，这些知识够丰富了。调用函数需要懂得在如何在一大堆不同对象间浏览。</p>
+<p>如果 <code>ctxt、Options和ScratchDir</code>只是数据结构，没有任何行为，则它们自然会暴露其内部结构，Demeter Law 也就不适用了。</p>
+<p>如果数据结构只简单地拥有公共变量，没有函数，而对象则拥有私有变量和公共函数，那么这个问题就没那么复杂了。</p>
+<h4 id="3-2-混杂"><a href="#3-2-混杂" class="headerlink" title="3.2 混杂"></a>3.2 混杂</h4><p>混杂：一半是对象，另一半是数据结构；</p>
+<p>这种结构拥有执行操作的函数，也有公共变量或公共访问器及改值器，<strong>增加了添加新函数的难度，也增加了添加新数据结构的难度</strong>，两头不讨好。</p>
+<h4 id="3-3-隐藏结构"><a href="#3-3-隐藏结构" class="headerlink" title="3.3 隐藏结构"></a>3.3 隐藏结构</h4><p>假使<code>ctxt、Options和ScratchDir</code>是拥有真实行为的对象又怎样呢？由于对象应隐藏其内部结构，我们就不该看到内部结构。这样一来，如何才能取得临时目录的绝对路径呢？</p>
+<p><strong>如果<code>ctxt</code>是一个对象，就应该要求它做点什么，而不该要求它给出内部情形</strong>。因此，我们看它获取绝对路径是要干啥:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">outFile</span> <span class="operator">=</span> outputDir + <span class="string">&quot;/&quot;</span> + className.replace(<span class="string">&#x27;.&#x27;</span>, <span class="string">&#x27;/&#x27;</span>) + <span class="string">&quot;.class&quot;</span>;</span><br><span class="line"><span class="type">FileOutputStream</span> <span class="variable">fout</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(outFile);</span><br><span class="line"><span class="type">BufferedOutputStream</span> <span class="variable">bos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedOutputStream</span>(fout);</span><br></pre></td></tr></table></figure>
+
+<p>破案了：创建指定名称的临时文件！</p>
+<p>那么，直接让<code>ctxt</code>对象来做这事如何？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BufferedOutputStream</span> <span class="variable">bos</span> <span class="operator">=</span> ctxt.createScratchFileStream(classFileName);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-数据传送对象-DTO"><a href="#4-数据传送对象-DTO" class="headerlink" title="4. 数据传送对象 DTO"></a>4. 数据传送对象 DTO</h3><p>最为精炼的数据结构，是一个只有公共变量、没有函数的类——数据传送对象（Data Transfer Objects，DTO）。</p>
+<p>DTO是非常有用的结构，尤其是在与数据库通信或解析套接字传递的信息之类的场景中，在应用程序代码里一系列将原始数据转换为数据库的翻译过程中，它们往往是排头兵。</p>
+<h3 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h3><p>在任何系统中，希望能灵活地添加新数据类型，则使用对象；希望能灵活地添加新行为，则使用数据类型和过程。优秀的软件开发者不带成见地了解这种情形，并依据手边工作的性质选择其中一种适合的手段。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Clean-Code/" rel="tag"># Clean Code</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/14/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-03%E5%87%BD%E6%95%B0/" rel="prev" title="代码整洁之道_03函数">
+                  <i class="fa fa-chevron-left"></i> 代码整洁之道_03函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/17/220820-7-%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93-07%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" rel="next" title="代码整洁之道_07错误处理">
+                  代码整洁之道_07错误处理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha256-xejo6yLi6vGtAjcMIsY8BHdKsLg7QynVlFMzdQgUuy8=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"suilandcoder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.12.3","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="微信小程序，一种全新的连接用户与服务的方式，可以在微信内被便捷的获取和传输，同时拥有出色的使用体验。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序开发经验记录">
+<meta property="og:url" content="https://suilandcoder.github.io/2022/03/03/220820-9-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Zero">
+<meta property="og:description" content="微信小程序，一种全新的连接用户与服务的方式，可以在微信内被便捷的获取和传输，同时拥有出色的使用体验。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/SuilandCoder/PicStorage/master/img/register.f3571165.png">
+<meta property="og:image" content="https://res.wx.qq.com/wxdoc/dist/assets/img/setting.f53f9212.png">
+<meta property="og:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220216110646567.png">
+<meta property="og:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220216154416327.png">
+<meta property="og:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220216154552041.png">
+<meta property="og:image" content="c:/Users/SongJie/AppData/Roaming/Typora/typora-user-images/image-20220217100556076.png">
+<meta property="article:published_time" content="2022-03-03T15:41:26.000Z">
+<meta property="article:modified_time" content="2022-08-20T15:42:20.992Z">
+<meta property="article:author" content="SongJie">
+<meta property="article:tag" content="微信小程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/SuilandCoder/PicStorage/master/img/register.f3571165.png">
+
+
+<link rel="canonical" href="https://suilandcoder.github.io/2022/03/03/220820-9-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://suilandcoder.github.io/2022/03/03/220820-9-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/","path":"2022/03/03/220820-9-微信小程序开发经验记录/","title":"微信小程序开发经验记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微信小程序开发经验记录 | Zero</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zero</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">至道无难，唯嫌拣择。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C"><span class="nav-text">微信小程序开发经验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AE%80%E4%BB%8B"><span class="nav-text">一、小程序简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="nav-text">1.1 小程序技术发展史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8E%E6%99%AE%E9%80%9A%E7%BD%91%E9%A1%B5%E5%BC%80%E5%8F%91%E5%8C%BA%E5%88%AB"><span class="nav-text">1.2 小程序与普通网页开发区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-text">1.3 小程序底层原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%89%B9%E7%82%B9"><span class="nav-text">1.4 小程序特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BC%80%E5%8F%91%E5%87%86%E5%A4%87"><span class="nav-text">二、开发准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E7%94%B3%E8%AF%B7%E8%B4%A6%E5%8F%B7"><span class="nav-text">2.1 申请账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="nav-text">2.2 安装开发工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91"><span class="nav-text">三、小程序开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91"><span class="nav-text">3.1 小程序页面开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Webview%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91"><span class="nav-text">3.2 Webview页面开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-1-tips"><span class="nav-text">3.2.1 tips</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E5%90%8E%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%8F%91"><span class="nav-text">3.3 后台服务开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-1-%E4%BC%A0%E7%BB%9F%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91"><span class="nav-text">3.3.1 传统后台开发</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-1-1-%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE%E6%B5%81%E7%A8%8B"><span class="nav-text">3.3.1.1 域名配置流程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-1-2-%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F%E7%89%B9%E7%82%B9"><span class="nav-text">3.3.1.2 传统方式特点</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-2-%E5%BE%AE%E4%BF%A1%E4%BA%91%E5%BC%80%E5%8F%91"><span class="nav-text">3.3.2 微信云开发</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-2-1-%E4%BA%91%E5%BC%80%E5%8F%91%E7%89%B9%E7%82%B9"><span class="nav-text">3.3.2.1 云开发特点</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-3-2-2-%E6%94%B6%E8%B4%B9%E6%A0%87%E5%87%86"><span class="nav-text">3.3.2.2 收费标准</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2"><span class="nav-text">四、小程序部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%85%B6%E4%BB%96%E4%BA%8B%E9%A1%B9"><span class="nav-text">五、其他事项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-%E5%9F%9F%E5%90%8D%E7%94%B3%E8%AF%B7"><span class="nav-text">5.1 域名申请</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-%E5%9F%9F%E5%90%8D%E5%A4%87%E6%A1%88"><span class="nav-text">5.2 域名备案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-1-%E4%BB%A3%E7%90%86%E7%BD%91%E7%AB%99%E5%A4%87%E6%A1%88"><span class="nav-text">5.2.1 代理网站备案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-2-%E8%87%AA%E5%B7%B1%E5%A4%87%E6%A1%88"><span class="nav-text">5.2.2 自己备案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3"><span class="nav-text">5.3 开放端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-%E4%B8%9A%E5%8A%A1%E5%9F%9F%E5%90%8D%E9%99%90%E5%88%B6"><span class="nav-text">5.4 业务域名限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE"><span class="nav-text">小程序项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B8%82%E5%9C%BA%E9%A1%B9%E7%9B%AE"><span class="nav-text">1. 市场项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%AD%E5%BF%83%E9%A1%B9%E7%9B%AE"><span class="nav-text">2. 中心项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%80%BB%E7%BB%93"><span class="nav-text">应用场景总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongJie</p>
+  <div class="site-description" itemprop="description">Just Do Something.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://suilandcoder.github.io/2022/03/03/220820-9-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongJie">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zero">
+      <meta itemprop="description" content="Just Do Something.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微信小程序开发经验记录 | Zero">
+      <meta itemprop="description" content="微信小程序，一种全新的连接用户与服务的方式，可以在微信内被便捷的获取和传输，同时拥有出色的使用体验。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信小程序开发经验记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-03 23:41:26" itemprop="dateCreated datePublished" datetime="2022-03-03T23:41:26+08:00">2022-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-20 23:42:20" itemprop="dateModified" datetime="2022-08-20T23:42:20+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">微信小程序，一种全新的连接用户与服务的方式，可以在微信内被便捷的获取和传输，同时拥有出色的使用体验。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="微信小程序开发经验"><a href="#微信小程序开发经验" class="headerlink" title="微信小程序开发经验"></a>微信小程序开发经验</h2><h3 id="一、小程序简介"><a href="#一、小程序简介" class="headerlink" title="一、小程序简介"></a>一、小程序简介</h3><p>一种全新的连接用户与服务的方式，可以在微信内被便捷的获取和传输，同时拥有出色的使用体验。</p>
+<h4 id="1-1-小程序技术发展史"><a href="#1-1-小程序技术发展史" class="headerlink" title="1.1 小程序技术发展史"></a>1.1 小程序技术发展史</h4><ol>
+<li><p>当<code>webview</code>成为<code>移动web</code>的重要入口时，微信开发了基于微信原生组件的 <strong>JS API</strong>: </p>
+<p><strong>目的</strong>：让开发者可以使用到微信的原生能力，去完成一些之前做不到或者难以做到的事情。</p>
+</li>
+<li><p>2015年初，微信发布了一整套网页开发工具包，称之为 <strong>JS-SDK</strong>，包括拍摄、录音、语音识别、二维码、地图、支付、分享、卡券等几十个API。</p>
+<p><strong>目的</strong>：解决移动网页能力不足的问题，通过暴露微信的接口使得 Web 开发者能够拥有更多的能力；</p>
+<p><strong>问题</strong>：没有解决使用移动网页遇到的体验不良的问题（用户在访问网页的时候，在浏览器开始显示之前都会有一个白屏的过程，在移动端，受限于设备性能和网络速度，白屏会更加明显）。</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 JS-SDK 调用图片预览组件</span></span><br><span class="line">wx.<span class="title function_">previewImage</span>(&#123;</span><br><span class="line">  <span class="attr">current</span>: <span class="string">&#x27;https://img1.gtimg.com/10/1048/104857/10485726_980x1200_0.jpg&#x27;</span>,</span><br><span class="line">  <span class="attr">urls</span>: [ <span class="comment">// 所有图片的URL列表，数组格式</span></span><br><span class="line">    <span class="string">&#x27;https://img1.gtimg.com/10/1048/104857/10485731_980x1200_0.jpg&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;https://img1.gtimg.com/10/1048/104857/10485726_980x1200_0.jpg&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;https://img1.gtimg.com/10/1048/104857/10485729_980x1200_0.jpg&#x27;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">res</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>设计微信小程序，使得所有开发者在微信中都能获得比较好的体验：</p>
+<ul>
+<li><p>快速的加载</p>
+</li>
+<li><p>更强大的能力</p>
+</li>
+<li><p>原生的体验</p>
+</li>
+<li><p>易用且安全的微信数据开放</p>
+</li>
+<li><p>高效和简单的开发</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-2-小程序与普通网页开发区别"><a href="#1-2-小程序与普通网页开发区别" class="headerlink" title="1.2 小程序与普通网页开发区别"></a>1.2 小程序与普通网页开发区别</h4><ol>
+<li><p>开发语言：</p>
+<ul>
+<li>小程序：JavaScript+WXML+WXSS;</li>
+<li>网页：JavaScript+html+css;</li>
+</ul>
+</li>
+<li><p>运行线程：</p>
+<ul>
+<li>小程序：开发渲染线程和脚本线程是分开，分别运行在不同的线程中。</li>
+<li>网页：开发渲染线程和脚本线程是互斥的，长时间的脚本运行可能会导致页面失去响应。</li>
+</ul>
+</li>
+<li><p>API使用：</p>
+<ul>
+<li>小程序：缺少浏览器对象相关的DOM API和BOM API（小程序的逻辑层和渲染层是分开的，逻辑层运行在 JSCore 中，并没有一个完整浏览器对象），NPM 的包在小程序中也无法运行（JSCore 的环境同 NodeJS 环境也是不尽相同）。</li>
+<li>网页：没有限制。</li>
+</ul>
+</li>
+<li><p>开发环境：</p>
+<ul>
+<li>小程序：申请小程序帐号、安装小程序开发者工具、配置项目等等。</li>
+<li>网页：只需要使用到浏览器，并且搭配上一些辅助工具或者编辑器即可。</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-3-小程序底层原理"><a href="#1-3-小程序底层原理" class="headerlink" title="1.3 小程序底层原理"></a>1.3 小程序底层原理</h4><p>若要了解小程序底层原理，请参考<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/ebook?action=get_post_info&docid=0004a2ef9b8f803b0086831c75140a">小程序开发指南</a>第三章与第六章：</p>
+<ul>
+<li>第三章 理解小程序宿主环境</li>
+<li>第六章 底层框架</li>
+</ul>
+<h4 id="1-4-小程序特点"><a href="#1-4-小程序特点" class="headerlink" title="1.4 小程序特点"></a>1.4 小程序特点</h4><ol>
+<li>内存占用小；</li>
+<li>无需安装；</li>
+<li>开发简单高效；</li>
+<li>面向公众；</li>
+<li>易用且安全的微信数据开放；</li>
+</ol>
+<h3 id="二、开发准备"><a href="#二、开发准备" class="headerlink" title="二、开发准备"></a>二、开发准备</h3><h4 id="2-1-申请账号"><a href="#2-1-申请账号" class="headerlink" title="2.1 申请账号"></a>2.1 申请账号</h4><p>开发小程序的第一步，需要拥有一个小程序 AppID，后续的所有开发流程会基于这个 AppID 来完成，进入<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wxopen/waregister?action=step1">小程序注册页</a> 根据指引填写信息和提交相应的资料。</p>
+<blockquote>
+<p>一个主体对应一个AppID，一个AppID对应一个小程序，即要开发多个小程序，需要注册多个小程序账号。</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/SuilandCoder/PicStorage/master/img/register.f3571165.png" alt="img" style="zoom: 25%;" />
+
+<p>在这个小程序管理平台，你可以管理你的小程序的权限，查看数据报表，发布小程序等操作。</p>
+<p>登录 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/">小程序后台</a> ，我们可以在菜单 “开发”-“开发设置” 看到小程序的 <strong>AppID</strong> 了 。</p>
+<img src="https://res.wx.qq.com/wxdoc/dist/assets/img/setting.f53f9212.png" alt="img" style="zoom:25%;" />
+
+<p>小程序的 AppID 相当于小程序平台的一个身份证，后续你会在很多地方要用到 AppID （注意这里要区别于服务号或订阅号的 AppID）。</p>
+<p>有了小程序帐号之后，我们需要一个工具来开发小程序。</p>
+<h4 id="2-2-安装开发工具"><a href="#2-2-安装开发工具" class="headerlink" title="2.2 安装开发工具"></a>2.2 安装开发工具</h4><p>前往 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html">开发者工具下载页面</a> ，根据自己的操作系统下载对应的安装包进行安装，有关开发者工具更详细的介绍可以查看 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html">《开发者工具介绍》</a> 。</p>
+<p>打开小程序开发者工具，用微信扫码登录开发者工具。</p>
+<h3 id="三、小程序开发"><a href="#三、小程序开发" class="headerlink" title="三、小程序开发"></a>三、小程序开发</h3><h4 id="3-1-小程序页面开发"><a href="#3-1-小程序页面开发" class="headerlink" title="3.1 小程序页面开发"></a>3.1 小程序页面开发</h4><p>与网页开发略微不同，小程序开发使用下面四种类型的文件：</p>
+<ol>
+<li><code>.json</code> 后缀的 <code>JSON</code> 配置文件</li>
+<li><code>.wxml</code> 后缀的 <code>WXML</code> 模板文件</li>
+<li><code>.wxss</code> 后缀的 <code>WXSS</code> 样式文件</li>
+<li><code>.js</code> 后缀的 <code>JS</code> 脚本逻辑文件</li>
+</ol>
+<p>具体开发工作参考<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/ebook?action=get_post_info&docid=0008aeea9a8978ab0086a685851c0a">小程序开发指南</a></p>
+<h4 id="3-2-Webview页面开发"><a href="#3-2-Webview页面开发" class="headerlink" title="3.2 Webview页面开发"></a>3.2 Webview页面开发</h4><p>小程序页面有自身的限制，例如一些js库无法使用；而webview是小程序开放能力的一种，通过合规的方式跳转到其他网页，可以扩展小程序的功能。在产业地图小程序的开发过程中，需要使用ArcGIS 的地图服务，但是小程序暂时没有提供<code>ArcGIS js api</code> ；所以<strong>需要开发外部webview网页实现访问地图服务的功能</strong>；</p>
+<h5 id="3-2-1-tips"><a href="#3-2-1-tips" class="headerlink" title="3.2.1 tips"></a>3.2.1 tips</h5><ol>
+<li><p><strong>网页内 iframe 的域名需要配置到业务域名白名单（业务域名限制见5.3业务域名限制）。</strong></p>
+<p><img src="C:\Users\SongJie\AppData\Roaming\Typora\typora-user-images\image-20220216110646567.png" alt="image-20220216110646567"></p>
+</li>
+<li><p><strong>个人类型的小程序暂不支持使用webview</strong>。</p>
+</li>
+<li><p>开发者工具上，可以在 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a> 组件上通过右键 - 调试，打开 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a> 组件的调试。</p>
+</li>
+<li><p>每个页面只能有一个 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a>，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a> 会自动铺满整个页面，并覆盖其他组件。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a> 网页与小程序之间不支持除 JSSDK 提供的接口之外的通信。</p>
+</li>
+<li><p>在 iOS 中，若存在JSSDK接口调用无响应的情况，可在 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">web-view</a> 的 src 后面加个#wechat_redirect解决。</p>
+</li>
+<li><p>避免在链接中带有中文字符，在 iOS 中会有打开白屏的问题，建议加一下 encodeURIComponent。</p>
+</li>
+</ol>
+<h4 id="3-3-后台服务开发"><a href="#3-3-后台服务开发" class="headerlink" title="3.3 后台服务开发"></a>3.3 后台服务开发</h4><p>小程序的后台服务开发有两种方式：传统后台开发，云开发；</p>
+<h5 id="3-3-1-传统后台开发"><a href="#3-3-1-传统后台开发" class="headerlink" title="3.3.1 传统后台开发"></a>3.3.1 传统后台开发</h5><p>后台服务功能实现与其他项目一样，不多赘述。</p>
+<p>出于安全性的考虑，小程序<strong>只可以跟指定的域名进行网络通信</strong>，包括普通 HTTPS 请求（<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html">wx.request</a>）、上传文件（<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html">wx.uploadFile</a>）、下载文件（<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html">wx.downloadFile</a>) 和 WebSocket 通信（<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html">wx.connectSocket</a>）。</p>
+<h6 id="3-3-1-1-域名配置流程"><a href="#3-3-1-1-域名配置流程" class="headerlink" title="3.3.1.1 域名配置流程"></a>3.3.1.1 域名配置流程</h6><p>服务器域名请在 「小程序后台-开发-开发设置-服务器域名」 中进行配置，配置时需要注意：</p>
+<ul>
+<li>域名只支持 <code>https</code> (<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html">wx.request</a>、<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html">wx.uploadFile</a>、<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html">wx.downloadFile</a>) 和 <code>wss</code> (<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html">wx.connectSocket</a>) 协议；</li>
+<li>域名不能使用 IP 地址（小程序的<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/ability/mDNS.html">局域网</a> IP 除外）或 localhost；</li>
+<li>可以配置端口，如 <a href="https://myserver.com:8080，但是配置后只能向">https://myserver.com:8080，但是配置后只能向</a> <a target="_blank" rel="noopener" href="https://myserver.com:8080/">https://myserver.com:8080</a> 发起请求。如果向 <a target="_blank" rel="noopener" href="https://myserver.com、https//myserver.com:9091">https://myserver.com、https://myserver.com:9091</a> 等 URL 请求则会失败。</li>
+<li>如果不配置端口。如 <a target="_blank" rel="noopener" href="https://myserver.com,那么请求的/">https://myserver.com，那么请求的</a> URL 中也不能包含端口，甚至是默认的 443 端口也不可以。如果向 <a target="_blank" rel="noopener" href="https://myserver.com/">https://myserver.com:443</a> 请求则会失败。</li>
+<li>域名必须经过 ICP 备案；</li>
+<li><strong>出于安全考虑，<code>api.weixin.qq.com</code> 不能被配置为服务器域名，相关API也不能在小程序内调用。</strong> 开发者应将 AppSecret 保存到后台服务器中，通过服务器使用 <code>getAccessToken</code> 接口获取 <code>access_token</code>，并调用相关 API；</li>
+<li>不支持配置父域名，使用子域名</li>
+</ul>
+<h6 id="3-3-1-2-传统方式特点"><a href="#3-3-1-2-传统方式特点" class="headerlink" title="3.3.1.2 传统方式特点"></a>3.3.1.2 传统方式特点</h6><ul>
+<li>不便：需要自己搭建服务器，申请域名、域名备案，开放端口，配置https证书，管理数据存储；若有大访问量的需求，还需要做负载均衡，CDN加速等。</li>
+<li>优势：灵活。</li>
+</ul>
+<h5 id="3-3-2-微信云开发"><a href="#3-3-2-微信云开发" class="headerlink" title="3.3.2 微信云开发"></a>3.3.2 微信云开发</h5><p>微信云开发是微信团队联合腾讯云推出的专业的小程序开发服务。</p>
+<p>开发者无需搭建服务器，可免鉴权直接使用平台提供的 API 进行业务开发。</p>
+<h6 id="3-3-2-1-云开发特点"><a href="#3-3-2-1-云开发特点" class="headerlink" title="3.3.2.1 云开发特点"></a>3.3.2.1 云开发特点</h6><ul>
+<li>优势：无需搭建服务器，免登录、鉴权调用微信服务，无需域名备案，不用担心DDoS等安全问题，不用管理数据存储……</li>
+<li>劣势：灵活性不高，无法定制服务功能，譬如转发（ArcGIS地图服务会使用到），需要收费。</li>
+</ul>
+<h6 id="3-3-2-2-收费标准"><a href="#3-3-2-2-收费标准" class="headerlink" title="3.3.2.2 收费标准"></a>3.3.2.2 收费标准</h6><ul>
+<li><p>按量计费</p>
+<img src="C:\Users\SongJie\AppData\Roaming\Typora\typora-user-images\image-20220216154416327.png" alt="image-20220216154416327" style="zoom:50%;" />
+</li>
+<li><p>预付费</p>
+<img src="C:\Users\SongJie\AppData\Roaming\Typora\typora-user-images\image-20220216154552041.png" alt="image-20220216154552041" style="zoom:50%;" /></li>
+</ul>
+<h3 id="四、小程序部署"><a href="#四、小程序部署" class="headerlink" title="四、小程序部署"></a>四、小程序部署</h3><p>小程序部署分为三个不同版本：测试版、体验版和线上版。不同版本的访问权限不同。</p>
+<ul>
+<li>测试版：项目成员访问；</li>
+<li>体验版：项目成员+体验成员；</li>
+<li>线上版：都可访问（可暂停服务，暂停后无法访问）</li>
+</ul>
+<p>在模拟器中完成开发后，就可以上传代码到服务器，先发布一个测试版，使用真机做进一步调试。测试版没有问题后，则可以进入<code>微信后台→版本管理</code>发布体验版。上线则需要<code>提交审核</code>，通过后就可以通过微信搜索到小程序了。</p>
+<img src="C:\Users\SongJie\AppData\Roaming\Typora\typora-user-images\image-20220217100556076.png" alt="image-20220217100556076" style="zoom:30%;" />
+
+
+
+<h3 id="五、其他事项"><a href="#五、其他事项" class="headerlink" title="五、其他事项"></a>五、其他事项</h3><p>出于安全性的考虑，小程序<strong>只可以跟指定的域名进行网络通信</strong>，且只支持HTTPS协议和WSS协议。因此，要完成小程序的线上运行，就需要申请域名并进行域名备案（在服务器没有可用域名的情况下）；另外，若小程序中使用到了webview，则需要配置业务域名，而业务域名是不能带端口的，这就意味着必须开放默认的443端口才能访问到webview。</p>
+<p>若是购买阿里云、腾讯云或者华为云等此类云服务器，做域名申请、备案和开放端口并没有什么坑；以下针对使用企业&#x2F;单位外网服务器(电信运营商)的情况。</p>
+<h4 id="5-1-域名申请"><a href="#5-1-域名申请" class="headerlink" title="5.1 域名申请"></a>5.1 域名申请</h4><p>选择一个靠谱的域名注册商例如阿里云、腾讯云或者华为云。并没有坑。</p>
+<h4 id="5-2-域名备案"><a href="#5-2-域名备案" class="headerlink" title="5.2 域名备案"></a>5.2 域名备案</h4><p>域名备案有两种途径：</p>
+<ol>
+<li>代理网站备案（阿里、腾讯、华为……）；</li>
+<li>自己通过服务器对应的通信公司备案（电信、移动、联通）；</li>
+</ol>
+<h5 id="5-2-1-代理网站备案"><a href="#5-2-1-代理网站备案" class="headerlink" title="5.2.1 代理网站备案"></a>5.2.1 代理网站备案</h5><p>必须购买相应网站上的云服务器（将云服务ip解析到二级域名），否则域名会被检测为空壳网站而被注销，无法反驳的注销理由。</p>
+<h5 id="5-2-2-自己备案"><a href="#5-2-2-自己备案" class="headerlink" title="5.2.2 自己备案"></a>5.2.2 自己备案</h5><p>自己通过服务器对应的通信公司备案相对来说会十分麻烦，下面以个人域名电信自助备案为例（比企业备案难度更大），准备以下材料：</p>
+<ol>
+<li>主办单位有效证件（个人手持身份证照片）。</li>
+<li>信息安全入网责任书（单位盖章改按手印）。</li>
+<li>居住证明（上传身份证）；</li>
+<li>真实性核验；</li>
+<li>域名证书；</li>
+<li>网站负责人照片；</li>
+</ol>
+<blockquote>
+<p>真实性核验和网站负责人照片需要到营业厅现场盖章和拍照（要求特定的背景墙）；</p>
+</blockquote>
+<p>登录<a target="_blank" rel="noopener" href="http://beian.189.cn/icp/icpBeian/xzba_fj_view.do">中国电信网站自助备案管理系统</a>填写备案信息，并上传材料，查看备案进度，一般需要一周的时间，备案过程中，遇到问题及时和工作人员联系：</p>
+<ul>
+<li><p>电信备案咨询电话：87129916  9:00-12:00  2:00-5:00</p>
+</li>
+<li><p>电信杨经理：18086037358</p>
+</li>
+</ul>
+<h4 id="5-3-开放端口"><a href="#5-3-开放端口" class="headerlink" title="5.3 开放端口"></a>5.3 开放端口</h4><p>提交网络信息安全承诺书（单位盖章）和开放端口申请书（客户经理盖章），备案系统里面发起变更接入，提交申请。具体流程可咨询相关工作人员：</p>
+<p>电信客户经理：18907191612；</p>
+<p>业务人员QQ号：1309195803；</p>
+<h4 id="5-4-业务域名限制"><a href="#5-4-业务域名限制" class="headerlink" title="5.4 业务域名限制"></a>5.4 业务域名限制</h4><p>1）每个小程序帐号支持配置最多200个域名；</p>
+<p>2）每个域名支持绑定最多100个主体的小程序；</p>
+<p>3）域名只支持https协议，不支持IP地址；</p>
+<p>4）业务域名需经过ICP备案，新备案域名需24小时后才可配置；</p>
+<p>5）域名格式只支持英文大小写字母、数字及“- ”；</p>
+<p>6）配置业务域名后，可打开任意合法的子域名；</p>
+<h3 id="小程序项目"><a href="#小程序项目" class="headerlink" title="小程序项目"></a>小程序项目</h3><h4 id="1-市场项目"><a href="#1-市场项目" class="headerlink" title="1. 市场项目"></a>1. 市场项目</h4><ul>
+<li><strong>交通类小程序</strong>：“车来了精准试试公交”小程序主要功能：城市切换、线路搜索、附近路线、最近使用、线路收藏</li>
+<li><strong>电商类小程序</strong>：“京东购物”小程序主要功能：基础购物功能满足用户购物全路径需求，差异化“购物圈”栏目功能满足轻量级社交功能，细节功能微调实现小程序内快速跳转</li>
+<li><strong>金融类小程序</strong>：“农行微服务”小程序主要功能：预约服务、精选优惠券、附近优惠</li>
+<li><strong>母婴类小程序</strong>：“护婴岛”小程序主要功能：到店扫码购，快速送，活动资讯</li>
+<li><strong>餐饮类小程序</strong>：“i麦当劳”小程序主要功能：点餐、储值、会员管理、品牌理念传达</li>
+<li><strong>物流类小程序</strong>：“圆通小APP”小程序主要功能：寄件、查件、客诉</li>
+<li><strong>生活类小程序</strong>：“万达电影+”小程序主要功能：影院选择、电影票购买、订单列表</li>
+</ul>
+<h4 id="2-中心项目"><a href="#2-中心项目" class="headerlink" title="2. 中心项目"></a>2. 中心项目</h4><h3 id="应用场景总结"><a href="#应用场景总结" class="headerlink" title="应用场景总结"></a>应用场景总结</h3><p>小程序具有无需安装，使用便捷的优点，适用于面向公众的，工具内容型，生活服务型的应用场景。</p>
+<p>不适用于交互要求高，视觉要求高的场景。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 微信小程序</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/26/220820-5-JavaScript-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1/" rel="prev" title="JavaScript 宏任务和微任务">
+                  <i class="fa fa-chevron-left"></i> JavaScript 宏任务和微任务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/18/220820-6-Vue%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" rel="next" title="220820-6-Vue学习路线">
+                  220820-6-Vue学习路线 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongJie</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
